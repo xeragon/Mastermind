@@ -15,14 +15,12 @@ package Model{
 
 
     class Combinaison {
-        - combinaison : Combinaison
-        + Combinaison(colors: Color[*])
-        + Combinaison()
+        - combinaison : Color[*]
+        + Combinaison(combinaison_size : Integer, colors: Color[*])
+        + Combinaison(combinaison_size : Integer)
         + switchColor(index : Integer, color : Color)
-
-
-
     }
+
     enum Display{
         MENU
         GAME
@@ -42,15 +40,24 @@ package Model{
         + Hint(combinaison : Combinaison)
     }
 
-    class Round() {
-        - nb_pions_combinaison : Integer
+    class Game {
+        - nb_round : Integer
+        - combinaison_size : Integer
         - nb_guess : Integer
         - nb_available_color : Integer
-        + set_nb_pions_combinaison(nb : Integer)
+        + set_combinaison_size(nb : Integer)
         + addGuess()
         + set_nb_available_color(nb : Integer)
         + getGuess():Integer
     }
+
+    class Round {
+        - combinaison : Combinaison
+        + Round(combinaison_size : Integer)
+        + getCombinaison() : Combinaison
+    }
+
+
 }
 
 package View {
@@ -60,7 +67,20 @@ package View {
         + SwitchDisplay(display : Display)
         + addObserver(observer : Observer)
         + notifyObservers()
+    }
 
+    class DisplayMode {
+        + displayHint()
+    }
+
+    class ModeEasy extends DisplayMode {
+      + displayHint()
+    }
+    class ModeClassic extends DisplayMode {
+      + displayHint()
+    }
+    class ModeNumeric extends DisplayMode {
+      + displayHint()
     }
 }
 
@@ -68,10 +88,9 @@ package View {
 package Controller{
     class GameController implements SelectColorObserver {
         - rounds : Round[*]
+        - current_game_mode : GameMode
         + selected_color : Color
     }
-
-
 }
 GameController o-> Observer
 
