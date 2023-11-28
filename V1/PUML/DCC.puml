@@ -1,0 +1,81 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package Model{
+    interface Observer{}
+    interface SelectColorObserver implements Observer{
+        + reactTo(color : Color)
+    }
+
+
+
+
+    class Combinaison {
+        - combinaison : Combinaison
+        + Combinaison(colors: Color[*])
+        + Combinaison()
+        + switchColor(index : Integer, color : Color)
+
+
+
+    }
+    enum Display{
+        MENU
+        GAME
+        END
+    }
+
+    enum Color {
+        RED
+        BLUE
+        YELLOW
+        GREEN
+        PURPLE
+        PINK
+    }
+
+    class Hint {
+        + Hint(combinaison : Combinaison)
+    }
+
+    class Round() {
+        - nb_pions_combinaison : Integer
+        - nb_guess : Integer
+        - nb_available_color : Integer
+        + set_nb_pions_combinaison(nb : Integer)
+        + addGuess()
+        + set_nb_available_color(nb : Integer)
+        + getGuess():Integer
+    }
+}
+
+package View {
+    class MainWindow {
+        - observers : Observer[*]
+        + MainWindow()
+        + SwitchDisplay(display : Display)
+        + addObserver(observer : Observer)
+        + notifyObservers()
+
+    }
+}
+
+
+package Controller{
+    class GameController implements SelectColorObserver {
+        - rounds : Round[*]
+        + selected_color : Color
+    }
+
+
+}
+GameController o-> Observer
+
+MainWindow ..> Hint: <<use>>
+MainWindow ..> Display: <<use>>
+
+@enduml
