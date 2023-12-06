@@ -6,22 +6,26 @@ skinparam style strictuml
 hide empty members
 
 package Model{
-    interface Observer{}
-    interface SelectColorObserver implements Observer{
-        + reactTo(color : Color)
-    }
-
-    class Combinaison {
-        + Combinaison(combinaison_size : Integer, colors: Color[*])
-        + Combinaison(combinaison_size : Integer)
+    class Combination {
+        + Combination(combination_size : Integer, colors: Color[*])
+        + Combination(combination_size : Integer)
         + switchColor(index : Integer, color : Color)
-        + compareTo(a: Combinaison) : Hint
+        + compareTo(a: Combination) : Hint
     }
 
     enum Display{
         MENU
         GAME
         END
+    }
+
+    enum HintState {
+        CORRECT
+        'Bonne couleur bonne position
+        WRONG_POS
+        'Bonne couleur mauvaise position
+        WRONG_COLOR
+        'mauvaise couleur
     }
 
     enum Color {
@@ -34,28 +38,28 @@ package Model{
     }
 
     class Hint {
-        + Hint(combinaison : Combinaison)
+        + Hint(combination : Combination)
     }
 
     class Game {
         - nb_round : Integer
-        - combinaison_size : Integer
+        - combination_size : Integer
         - nb_guess : Integer
         - nb_available_color : Integer
-        + set_combinaison_size(nb : Integer)
+        + set_combination_size(nb : Integer)
         + addGuess()
         + set_nb_available_color(nb : Integer)
         + getGuess():Integer
     }
 
     class Round {
-        + Round(combinaison_size : Integer)
-        + getCombinaison() : Combinaison
+        + Round(combination_size : Integer)
+        + getCombination() : Combination
     }
     Game *--> Round : "1.*\n- rounds"
-    ' Game *-> Combinaison : "1\n- secret_combine"
-    ' Game *-> Combinaison
-    Combinaison *-> Color : "1.*\n- colors"
+    Combination *-> Color : "1.*\n- colors"
+    Round *-> "1\n-hint" Hint
+    Hint o-u-> "0..*\nhintStates" HintState
 }
 
 package View {
@@ -85,14 +89,14 @@ package View {
 
 package Controller{
     class GameController implements SelectColorObserver {
-        - rounds : Round[*]
         - current_game_mode : GameMode
         + selected_color : Color
     }
+    GameController *--> "1..*\n- games" Game
+    GameController o--> "1\ndifficulty" DisplayMode
 }
-GameController o-> Observer
-Round *-> " 1 \n - sercretCombi" Combinaison
-Round *-> " 1..* \n - combiArray" Combinaison
+Round *-> " 1 \n - sercretCombination" Combination
+Round *-> " 1..* \n - combiArray" Combination
 
 MainWindow ..> Hint: <<use>>
 MainWindow ..> Display: <<use>>
