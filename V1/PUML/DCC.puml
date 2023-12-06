@@ -11,14 +11,12 @@ package Model{
         + reactTo(color : Color)
     }
 
-
-
-
     class Combinaison {
         - combinaison : Color[*]
         + Combinaison(combinaison_size : Integer, colors: Color[*])
         + Combinaison(combinaison_size : Integer)
         + switchColor(index : Integer, color : Color)
+        + compare(a: Combinaison, b: Combinaison)
     }
 
     enum Display{
@@ -56,8 +54,9 @@ package Model{
         + Round(combinaison_size : Integer)
         + getCombinaison() : Combinaison
     }
-
-
+    Game *--> Round : "1.*\n- rounds"
+    Game *-> Combinaison : "1\n- secret_combine"
+    Game *-> Combinaison
 }
 
 package View {
