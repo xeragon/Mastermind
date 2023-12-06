@@ -49,13 +49,12 @@ package Model{
     }
 
     class Round {
-        - combinaison : Combinaison
         + Round(combinaison_size : Integer)
         + getCombinaison() : Combinaison
     }
     Game *--> Round : "1.*\n- rounds"
-    Game *-> Combinaison : "1\n- secret_combine"
-    Game *-> Combinaison
+    ' Game *-> Combinaison : "1\n- secret_combine"
+    ' Game *-> Combinaison
     Combinaison *-> Color : "1.*\n- colors"
 }
 
@@ -92,6 +91,8 @@ package Controller{
     }
 }
 GameController o-> Observer
+Round *-> " 1 \n - sercretCombi" Combinaison
+Round *-> " 1..* \n - combiArray" Combinaison
 
 MainWindow ..> Hint: <<use>>
 MainWindow ..> Display: <<use>>
