@@ -6,10 +6,7 @@ skinparam style strictuml
 hide empty members
 
 package Model{
-    interface Observer{}
-    interface SelectColorObserver implements Observer{
-        + reactTo(color : Color)
-    }
+
 
     class Combinaison {
         + Combinaison(combinaison_size : Integer, colors: Color[*])
@@ -18,11 +15,6 @@ package Model{
         + compareTo(a: Combinaison) : Hint
     }
 
-    enum Display{
-        MENU
-        GAME
-        END
-    }
 
     enum Color {
         RED
@@ -33,8 +25,14 @@ package Model{
         PINK
     }
 
+    enum HintState{
+        CORRECT,
+        COLOR_NOT_EXIST,
+        COLOR_WRONG_PLACE
+    }
+
     class Hint {
-        + Hint(combinaison : Combinaison)
+        + Hint(index_color_wrong_place : int[*], index_color_not_exist : int[*],size : int)
     }
 
     class Game {
@@ -53,18 +51,19 @@ package Model{
         + getCombinaison() : Combinaison
     }
     Game *--> Round : "1.*\n- rounds"
-    ' Game *-> Combinaison : "1\n- secret_combine"
-    ' Game *-> Combinaison
     Combinaison *-> Color : "1.*\n- colors"
 }
 
 package View {
+    enum Display{
+        MENU
+        GAME
+        END
+    }
     class MainWindow {
-        - observers : Observer[*]
         + MainWindow()
         + SwitchDisplay(display : Display)
-        + addObserver(observer : Observer)
-        + notifyObservers()
+
     }
 
     class DisplayMode {
@@ -84,17 +83,20 @@ package View {
 
 
 package Controller{
-    class GameController implements SelectColorObserver {
+    class GameController {
         - rounds : Round[*]
         - current_game_mode : GameMode
         + selected_color : Color
     }
 }
-GameController o-> Observer
+MainWindow *-> "1 \n displayMode" DisplayMode
 Round *-> " 1 \n - sercretCombi" Combinaison
 Round *-> " 1..* \n - combiArray" Combinaison
+Round *-> " 1..* \n - hints" Hint
+Hint *-> " 1..* \n - hints" HintState
 
-MainWindow ..> Hint: <<use>>
+MainWindow ..> GameController: <<use>>
 MainWindow ..> Display: <<use>>
+note right of Round : if i remove that display is bugged
 
 @enduml
