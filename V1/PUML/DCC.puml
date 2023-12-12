@@ -1,0 +1,102 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package Model{
+
+
+    class Combinaison {
+        + Combinaison(combinaison_size : Integer, colors: Color[*])
+        + Combinaison(combinaison_size : Integer)
+        + switchColor(index : Integer, color : Color)
+        + compareTo(a: Combinaison) : Hint
+    }
+
+
+    enum Color {
+        RED
+        BLUE
+        YELLOW
+        GREEN
+        PURPLE
+        PINK
+    }
+
+    enum HintState{
+        CORRECT,
+        COLOR_NOT_EXIST,
+        COLOR_WRONG_PLACE
+    }
+
+    class Hint {
+        + Hint(index_color_wrong_place : int[*], index_color_not_exist : int[*],size : int)
+    }
+
+    class Game {
+        - nb_round : Integer
+        - combinaison_size : Integer
+        - nb_guess : Integer
+        - nb_available_color : Integer
+        + set_combinaison_size(nb : Integer)
+        + addGuess()
+        + set_nb_available_color(nb : Integer)
+        + getGuess():Integer
+    }
+
+    class Round {
+        + Round(combinaison_size : Integer)
+        + getCombinaison() : Combinaison
+    }
+    Game *--> Round : "1.*\n- rounds"
+    Combinaison *-> Color : "1.*\n- colors"
+}
+
+package View {
+    enum Display{
+        MENU
+        GAME
+        END
+    }
+    class MainWindow {
+        + MainWindow()
+        + SwitchDisplay(display : Display)
+
+    }
+
+    class DisplayMode {
+        + displayHint()
+    }
+
+    class ModeEasy extends DisplayMode {
+      + displayHint()
+    }
+    class ModeClassic extends DisplayMode {
+      + displayHint()
+    }
+    class ModeNumeric extends DisplayMode {
+      + displayHint()
+    }
+}
+
+
+package Controller{
+    class GameController {
+        - rounds : Round[*]
+        - current_game_mode : GameMode
+        + selected_color : Color
+    }
+}
+MainWindow *-> "1 \n displayMode" DisplayMode
+Round *-> " 1 \n - sercretCombi" Combinaison
+Round *-> " 1..* \n - combiArray" Combinaison
+Round *-> " 1..* \n - hints" Hint
+Hint *-> " 1..* \n - hints" HintState
+
+MainWindow ..> GameController: <<use>>
+MainWindow ..> Display: <<use>>
+note right of Round : if i remove that display is bugged
+
+@enduml
