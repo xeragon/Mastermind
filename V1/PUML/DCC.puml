@@ -90,13 +90,13 @@ package Controller{
     }
 }
 MainWindow *-> "1 \n displayMode" DisplayMode
-Round *-> " 1 \n - sercretCombi" Combinaison
-Round *-> " 1..* \n - combiArray" Combinaison
+Round *--> " 1 \n - sercretCombi" Combinaison
+Round *--> " 1..* \n - combiArray" Combinaison
 Round *-> " 1..* \n - hints" Hint
-Hint *-> " 1..* \n - hints" HintState
+Hint *--> " 1..* \n - hints" HintState
 
 MainWindow ..> GameController: <<use>>
 MainWindow ..> Display: <<use>>
-note right of Round : if i remove that display is bugged
+
 
 @enduml
