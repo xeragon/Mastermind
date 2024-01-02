@@ -13,6 +13,7 @@ public class Round {
     private Integer nb_guess;
     private Integer index_current_guess = 0;
     private Integer combination_size ;
+
     public Round(int nb_guess, int combination_size){
         this.combination_size = combination_size;
         this.hints = new Hint[nb_guess];
@@ -22,7 +23,12 @@ public class Round {
         this.secret_combination.random();
 
     }
-
+    public Combination get_secret_combination(){
+        return secret_combination;
+    }
+    public Combination [] get_combinations(){
+        return combinations;
+    }
     public void display_game(){
         System.out.println("the secret combination is " + secret_combination.get_content());
     }
@@ -31,9 +37,9 @@ public class Round {
         System.out.println("submit a choice");
         for (int i = 0; i < combination_size; i++) {
             Color toSet = Color.valueOf(s.next().toUpperCase());
-            combinations[index_current_guess].setColor(i,toSet);
+            combinations[index_current_guess].set_color(i,toSet);
         }
-        hints[index_current_guess] = combinations[index_current_guess].compareTo(secret_combination);
+        hints[index_current_guess] = combinations[index_current_guess].compare_to(secret_combination);
         System.out.println("your hint is : " + hints[index_current_guess].get_display_hint());
         index_current_guess++;
         // s.close();
