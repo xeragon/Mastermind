@@ -2,20 +2,30 @@ package V1.Model;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game {
     private int nb_round;
     private int combination_size;
     private int nb_guess;
     private int nb_color_availaible;
-    private ArrayList<Round> rounds = new ArrayList<Round>(); 
+
+    private Round [] rounds; 
+    private int index_current_round = 0 ;
 
     public Game(int nb_round, int combination_size,int nb_guess,int nb_color_availaible){
         this.nb_round = nb_round;
         this.combination_size = combination_size;
         this.nb_guess = nb_guess;
         this.nb_color_availaible = nb_color_availaible;
+        this.rounds = new Round[nb_round];
+        Arrays.fill(this.rounds, new Round(nb_guess,combination_size));
         
+    }
+
+    public void start(){
+        this.rounds[this.index_current_round].display_game();
+        this.rounds[this.index_current_round].listen_for_combi();
     }
 
     public int getCombination_size() {
