@@ -41,9 +41,9 @@ public class MainWindow extends JFrame {
     
     public void display_game(Game game){
         Round current_round = game.get_current_round();
-        pnlPrincipal.add(get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()));
+        pnlSecret.add(get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()));
         for (Combination c : current_round.get_combinations()) {
-            pnlPrincipal.add(get_combination_panel(c, game.get_combination_size()));
+            pnlSecret.add(get_combination_panel(c, game.get_combination_size()));
         }
     }
     
@@ -56,9 +56,9 @@ public class MainWindow extends JFrame {
         
     }
 
-    public JButton get_combination_button(Color color){
-        JButton combination_button = new JButton(); 
-        combination_button.setBackground(color);
+    public JButton get_combination_button(V1.Model.Color color){
+        JButton combination_button = new JButton();
+        combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             // set color et faut gerer si c'est la current combi 
             System.out.println("button clicked");
@@ -66,6 +66,10 @@ public class MainWindow extends JFrame {
         combination_button.setEnabled(false);
     
         return combination_button;
+    }
+
+    public Color convert_color(V1.Model.Color color){
+        return Color.RED;
     }
 
 }
