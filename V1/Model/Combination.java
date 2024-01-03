@@ -14,12 +14,15 @@ public class Combination {
         this.used_colors = new HashSet<>(Arrays.asList(this.colors));
     }
 
-    public void setColor(Integer index, Color color){
+    public Color get_color(int index){
+        return colors[index];
+    }
+    public void set_color(Integer index, Color color){
         this.colors[index] = color;
         
     }
 
-    public Hint compareTo(Combination combination){
+    public Hint compare_to(Combination combination){
         Integer s = this.colors.length;
         ArrayList<Integer> index_color_not_exist = new ArrayList<Integer>();
         ArrayList<Integer> index_color_wrong_place = new ArrayList<Integer>();

@@ -28,29 +28,32 @@ public class Game {
         this.rounds[this.index_current_round].listen_for_combi();
     }
 
-    public int getCombination_size() {
+    public Round get_current_round(){
+        return this.rounds[this.index_current_round];
+    }
+    public int get_combination_size() {
         return combination_size;
     }
-    public int getNb_color_availaible() {
+    public int get_nb_color_availaible() {
         return nb_color_availaible;
     }
-    public int getNb_guess() {
+    public int get_nb_guess() {
         return nb_guess;
     }
-    public int getNb_round() {
+    public int get_nb_round() {
         return nb_round;
     }
 
-    public void setCombination_size(int combination_size) {
+    public void set_combination_size(int combination_size) {
         this.combination_size = combination_size;
     }
-    public void setNb_color_availaible(int nb_color_availaible) {
+    public void set_nb_color_availaible(int nb_color_availaible) {
         this.nb_color_availaible = nb_color_availaible;
     }
-    public void setNb_guess(int nb_guess) {
+    public void set_nb_guess(int nb_guess) {
         this.nb_guess = nb_guess;
     }
-    public void setNb_round(int nb_round) {
+    public void set_nb_round(int nb_round) {
         this.nb_round = nb_round;
     }
 
