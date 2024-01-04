@@ -11,6 +11,7 @@ public class Combination {
     private Set<Color> used_colors;
     public Combination(Integer combination_size){
         this.colors = new Color[combination_size];
+        Arrays.fill(colors, null);
         this.used_colors = new HashSet<>(Arrays.asList(this.colors));
     }
 
@@ -19,7 +20,6 @@ public class Combination {
     }
     public void set_color(Integer index, Color color){
         this.colors[index] = color;
-        
     }
 
     public Hint compare_to(Combination combination){

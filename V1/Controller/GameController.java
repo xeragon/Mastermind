@@ -4,13 +4,14 @@ import V1.View.*;
 import V1.Model.*;
 
 public class GameController {
-    public MainWindow window = new MainWindow();
+    private MainWindow window;
     
     
     public GameController(){}
 
     public void start_game(){
         Game game = new Game(3, 5, 5, 5);
-        window.display_game(game);
+        window = new MainWindow(game);
+        window.display_game();
     }
 }
