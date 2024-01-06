@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
 
         
         setContentPane(pnlPrincipal);
-        pnlPrincipal.add(pnlSecret, BorderLayout.PAGE_END);
+        pnlPrincipal.add(pnlSecret);
         // pnlPrincipal.add(pnlCombination, BorderLayout.CENTER);
         // pnlPrincipal.add(pnlHint, BorderLayout.EAST);   
         
@@ -61,7 +61,7 @@ public class MainWindow extends JFrame {
     }
     
     public JPanel get_combination_panel(Combination combination, int combination_size){
-        JPanel combination_panel = new JPanel(new FlowLayout());
+        JPanel combination_panel = new JPanel(new GridLayout(1, game.get_combination_size()));
         for (int i = 0; i < combination_size; i++){
             combination_panel.add(get_combination_button(combination.get_color(i)));
         }
