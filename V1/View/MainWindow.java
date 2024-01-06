@@ -13,6 +13,7 @@ public class MainWindow extends JFrame {
     private HintDisplayMode hint_display_mode;
     private JPanel pnlPrincipal;
     private JPanel pnlSecret;
+    private JPanel pnlTries;
     private Game game; 
     public MainWindow(Game game){
         super( "MasterMind" ); // ou setTitle("My app")
@@ -20,15 +21,18 @@ public class MainWindow extends JFrame {
         setSize(400,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         System.out.println(game.get_nb_guess());
-        pnlPrincipal = new JPanel(new GridLayout(game.get_nb_guess()+1,1));
+        pnlPrincipal = new JPanel(new GridLayout(0,1));
+        pnlTries = new JPanel(new GridLayout(game.get_combination_size(),1));
 
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
         // JPanel pnlHint = new JPanel(new GridLayout(5, 1));
         pnlSecret = new JPanel(new GridLayout(1, game.get_combination_size()));
 
-        
+
         setContentPane(pnlPrincipal);
         pnlPrincipal.add(pnlSecret);
+        pnlPrincipal.add(pnlTries);
+        
         // pnlPrincipal.add(pnlCombination, BorderLayout.CENTER);
         // pnlPrincipal.add(pnlHint, BorderLayout.EAST);   
         
@@ -52,7 +56,7 @@ public class MainWindow extends JFrame {
         
         
         for (Combination c : current_round.get_combinations()) {
-            pnlPrincipal.add(get_combination_panel(c, game.get_combination_size()));
+            pnlTries.add(get_combination_panel(c, game.get_combination_size()));
         }
 
         repaint();
