@@ -32,7 +32,9 @@ public class MainWindow extends JFrame {
         setContentPane(pnlPrincipal);
         pnlPrincipal.add(pnlSecret);
         pnlPrincipal.add(pnlTries);
-        
+
+        pnlPrincipal.add(available_colors());
+
         // pnlPrincipal.add(pnlCombination, BorderLayout.CENTER);
         // pnlPrincipal.add(pnlHint, BorderLayout.EAST);   
         
@@ -106,5 +108,16 @@ public class MainWindow extends JFrame {
                 return Color.PINK;
         }
         return null;
+    }
+
+    private JPanel available_colors(){
+        JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible()%game.get_combination_size(), game.get_combination_size()));
+        res.add(get_combination_button(V1.Model.Color.RED));
+        res.add(get_combination_button(V1.Model.Color.BLUE));
+        res.add(get_combination_button(V1.Model.Color.GREEN));
+        res.add(get_combination_button(V1.Model.Color.YELLOW));
+        res.add(get_combination_button(V1.Model.Color.PURPLE));
+        res.add(get_combination_button(V1.Model.Color.PINK));
+        return res;
     }
 }
