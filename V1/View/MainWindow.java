@@ -14,6 +14,8 @@ public class MainWindow extends JFrame {
     private JPanel pnlPrincipal;
     private JPanel pnlSecret;
     private JPanel pnlTries;
+
+    private V1.Model.Color last_color = V1.Model.Color.RED;
     private Game game; 
     public MainWindow(Game game){
         super( "MasterMind" ); // ou setTitle("My app")
@@ -37,8 +39,7 @@ public class MainWindow extends JFrame {
 
         // pnlPrincipal.add(pnlCombination, BorderLayout.CENTER);
         // pnlPrincipal.add(pnlHint, BorderLayout.EAST);   
-        
-        
+
         
         setVisible( true );
     }
@@ -82,9 +83,23 @@ public class MainWindow extends JFrame {
         combination_button.addActionListener(actionEvent -> {
             // set color et faut gerer si c'est la current combi 
             System.out.println("button clicked");
+            combination_button.setBackground(convert_color(this.last_color));
         });
         combination_button.setEnabled(true);
     
+        return combination_button;
+    }
+
+    public JButton get_color_button(V1.Model.Color color){
+        JButton combination_button = new JButton();
+        combination_button.setBackground(convert_color(color));
+        combination_button.addActionListener(actionEvent -> {
+            // set color et faut gerer si c'est la current combi
+            System.out.println("button clicked");
+            this.last_color = color;
+        });
+        combination_button.setEnabled(true);
+
         return combination_button;
     }
 
@@ -112,12 +127,12 @@ public class MainWindow extends JFrame {
 
     private JPanel available_colors(){
         JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible()%game.get_combination_size(), game.get_combination_size()));
-        res.add(get_combination_button(V1.Model.Color.RED));
-        res.add(get_combination_button(V1.Model.Color.BLUE));
-        res.add(get_combination_button(V1.Model.Color.GREEN));
-        res.add(get_combination_button(V1.Model.Color.YELLOW));
-        res.add(get_combination_button(V1.Model.Color.PURPLE));
-        res.add(get_combination_button(V1.Model.Color.PINK));
+        res.add(get_color_button(V1.Model.Color.RED));
+        res.add(get_color_button(V1.Model.Color.BLUE));
+        res.add(get_color_button(V1.Model.Color.GREEN));
+        res.add(get_color_button(V1.Model.Color.YELLOW));
+        res.add(get_color_button(V1.Model.Color.PURPLE));
+        res.add(get_color_button(V1.Model.Color.PINK));
         return res;
     }
 }
