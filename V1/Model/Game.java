@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game {
+    private Color selected_color = Color.BLUE;
     private int nb_round;
     private int combination_size;
     private int nb_guess;
@@ -27,7 +28,9 @@ public class Game {
         this.rounds[this.index_current_round].display_game();
         this.rounds[this.index_current_round].listen_for_combi();
     }
-
+    public Color get_current_color(){
+        return selected_color;
+    }
     public Round get_current_round(){
         return this.rounds[this.index_current_round];
     }

@@ -75,6 +75,7 @@ public class MainWindow extends JFrame {
         combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             // set color et faut gerer si c'est la current combi 
+            combination_button.setBackground(convert_color(game.get_current_color()));
             System.out.println("button clicked");
         });
         combination_button.setEnabled(true);
