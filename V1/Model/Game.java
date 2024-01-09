@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game {
+    private Color selected_color = Color.BLUE;
+
     private int nb_round;
     private int combination_size;
     private int nb_guess;
     private int nb_color_availaible;
+
+    private int nb_guess_taken = 0;
 
     private Round [] rounds; 
     private int index_current_round = 0 ;
@@ -22,12 +26,22 @@ public class Game {
         Arrays.fill(this.rounds, new Round(nb_guess,combination_size));
         
     }
-
+    public boolean can_continue_guess(){
+        boolean r = false;
+        if(nb_guess_taken < nb_guess){
+            r = true;
+        }
+        nb_guess_taken++;
+        System.out.println(r);
+        return r;
+    }
     public void start(){
         this.rounds[this.index_current_round].display_game();
         this.rounds[this.index_current_round].listen_for_combi();
     }
-
+    public Color get_current_color(){
+        return selected_color;
+    }
     public Round get_current_round(){
         return this.rounds[this.index_current_round];
     }
@@ -39,6 +53,9 @@ public class Game {
     }
     public int get_nb_guess() {
         return nb_guess;
+    }
+    public int get_nb_guess_taken() {
+        return nb_guess_taken;
     }
     public int get_nb_round() {
         return nb_round;
