@@ -13,6 +13,9 @@ public class MainWindow extends JFrame {
     private HintDisplayMode hint_display_mode;
     private JPanel pnlPrincipal;
     private JPanel pnlSecret;
+    private JPanel pnlTries;
+
+    private V1.Model.Color last_color = V1.Model.Color.RED;
     private Game game; 
     public MainWindow(Game game){
         super( "MasterMind" ); // ou setTitle("My app")
@@ -20,19 +23,23 @@ public class MainWindow extends JFrame {
         setSize(400,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         System.out.println(game.get_nb_guess());
-        pnlPrincipal = new JPanel(new GridLayout(game.get_nb_guess()+1,1));
+        pnlPrincipal = new JPanel(new GridLayout(0,1));
+        pnlTries = new JPanel(new GridLayout(game.get_combination_size(),1));
 
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
         // JPanel pnlHint = new JPanel(new GridLayout(5, 1));
         pnlSecret = new JPanel(new GridLayout(1, game.get_combination_size()));
 
-        
+
         setContentPane(pnlPrincipal);
-        pnlPrincipal.add(pnlSecret, BorderLayout.PAGE_END);
+        pnlPrincipal.add(pnlSecret);
+        pnlPrincipal.add(pnlTries);
+
+        pnlPrincipal.add(available_colors());
+
         // pnlPrincipal.add(pnlCombination, BorderLayout.CENTER);
         // pnlPrincipal.add(pnlHint, BorderLayout.EAST);   
-        
-        
+
         
         setVisible( true );
     }
@@ -52,7 +59,7 @@ public class MainWindow extends JFrame {
         
         
         for (Combination c : current_round.get_combinations()) {
-            pnlPrincipal.add(get_combination_panel(c, game.get_combination_size()));
+            pnlTries.add(get_combination_panel(c, game.get_combination_size()));
         }
 
         repaint();
@@ -61,7 +68,7 @@ public class MainWindow extends JFrame {
     }
     
     public JPanel get_combination_panel(Combination combination, int combination_size){
-        JPanel combination_panel = new JPanel(new FlowLayout());
+        JPanel combination_panel = new JPanel(new GridLayout(1, game.get_combination_size()));
         for (int i = 0; i < combination_size; i++){
             combination_panel.add(get_combination_button(combination.get_color(i)));
         }
@@ -77,9 +84,23 @@ public class MainWindow extends JFrame {
             // set color et faut gerer si c'est la current combi 
             combination_button.setBackground(convert_color(game.get_current_color()));
             System.out.println("button clicked");
+            combination_button.setBackground(convert_color(this.last_color));
         });
         combination_button.setEnabled(true);
     
+        return combination_button;
+    }
+
+    public JButton get_color_button(V1.Model.Color color){
+        JButton combination_button = new JButton();
+        combination_button.setBackground(convert_color(color));
+        combination_button.addActionListener(actionEvent -> {
+            // set color et faut gerer si c'est la current combi
+            System.out.println("button clicked");
+            this.last_color = color;
+        });
+        combination_button.setEnabled(true);
+
         return combination_button;
     }
 
@@ -103,5 +124,16 @@ public class MainWindow extends JFrame {
                 return Color.PINK;
         }
         return null;
+    }
+
+    private JPanel available_colors(){
+        JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible()%game.get_combination_size(), game.get_combination_size()));
+        res.add(get_color_button(V1.Model.Color.RED));
+        res.add(get_color_button(V1.Model.Color.BLUE));
+        res.add(get_color_button(V1.Model.Color.GREEN));
+        res.add(get_color_button(V1.Model.Color.YELLOW));
+        res.add(get_color_button(V1.Model.Color.PURPLE));
+        res.add(get_color_button(V1.Model.Color.PINK));
+        return res;
     }
 }
