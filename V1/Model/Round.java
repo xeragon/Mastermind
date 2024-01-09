@@ -29,6 +29,10 @@ public class Round {
     public Combination [] get_combinations(){
         return combinations;
     }
+    public void set_combination(Combination [] combinations){
+        this.combinations = combinations;
+    }
+
     public void display_game(){
         System.out.println("the secret combination is " + secret_combination.get_content());
     }
@@ -44,6 +48,7 @@ public class Round {
         index_current_guess++;
         // s.close();
     }
+    
 
     
 }
