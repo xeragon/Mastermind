@@ -15,6 +15,14 @@ public class Combination {
         this.used_colors = new HashSet<>(Arrays.asList(this.colors));
     }
 
+    public Combination(V1.Model.Color[] init_colors){
+        this.colors = new Color[init_colors.length];
+        for (int i = 0; i < init_colors.length; i++) {
+            this.colors[i] = init_colors[i];
+        }
+        this.used_colors = new HashSet<>(Arrays.asList(this.colors));
+    }
+
     public Color get_color(int index){
         return colors[index];
     }

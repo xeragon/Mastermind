@@ -29,8 +29,8 @@ public class Round {
     public Combination [] get_combinations(){
         return combinations;
     }
-    public void set_combination(Combination [] combinations){
-        this.combinations = combinations;
+    public void set_combination(Combination combination, int index){
+        this.combinations[index] = combination;
     }
 
     public void display_game(){
