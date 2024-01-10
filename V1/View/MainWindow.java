@@ -90,7 +90,8 @@ public class MainWindow extends JFrame {
         
         pnlPrincipal = new JPanel(new BorderLayout());
         pnlTries = new JPanel(new GridLayout(game.get_nb_guess(), 1));
-        
+        PanelRound pnl_test = new PanelRound();
+
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
         JPanel pnl_available_colors = available_colors(); // Regrouppe tout les boutons de couleur
         
@@ -128,15 +129,18 @@ public class MainWindow extends JFrame {
 
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
-        JPanel combination_panel = new JPanel(new GridLayout(1, game.get_combination_size() + 1));
+        CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
         for (int i = 0; i < combination_size; i++) {
             combination_panel.add(get_combination_button(combination.get_color(i)));
         }
-        JPanel pnlHint = new JPanel(new GridLayout(game.get_combination_size(), 1)); // 1 panel de Hint par combinaison
+        JPanel pnl_hint = new JPanel(new GridLayout(1, game.get_combination_size())); // 1 panel de Hint par combinaison
         for (int i = 0; i < game.get_combination_size(); i++) {
-            pnlHint.add(new JLabel("hint " + Integer.toString(i)));
+
+            TiltLabel lbl_hint = new TiltLabel("hint " + Integer.toString(i));
+
+            pnl_hint.add(lbl_hint);
         }
-        combination_panel.add(pnlHint);
+        combination_panel.add(pnl_hint);
         repaint();
         revalidate();
         return combination_panel;
@@ -144,7 +148,7 @@ public class MainWindow extends JFrame {
 
     // transforme l'élément de la combinaison en bouton
     public JButton get_combination_button(V1.Model.Color color) {
-        JButton combination_button = new JButton();
+        JButton combination_button = new RoundColorButton();
         combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             // set color et faut gerer si c'est la current combi
@@ -244,14 +248,14 @@ public class MainWindow extends JFrame {
             label.setText(hint.get_hint(i));
             switch(hint.get_hint(i)){
                 case "CORRECT" :
-                    label.setBackground(Color.GREEN);
-                    break;
+                label.setBackground(Color.GREEN);
+                break;
                 case "COLOR_WRONG_PLACE" :
-                    label.setBackground(Color.YELLOW);
-                    break;
+                label.setBackground(Color.YELLOW);
+                break;
                 case "COLOR_NOT_EXIST" :
-                    label.setBackground(Color.RED);
-                    break;
+                label.setBackground(Color.RED);
+                break;
             }
             label.setOpaque(true);
         }
