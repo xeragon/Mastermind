@@ -28,4 +28,8 @@ public class Hint {
 
     }
 
+    public String get_hint(int index){
+        return this.hints[index].toString();
+    }
+
 }
