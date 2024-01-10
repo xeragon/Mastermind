@@ -9,7 +9,7 @@ public class Hint {
 
     public Hint(ArrayList<Integer> index_color_wrong_place, ArrayList<Integer> index_color_not_exist, Integer size){
         this.hints = new HintState[size];
-        Arrays.fill(hints, 0,size-1,HintState.CORRECT);
+        Arrays.fill(hints, 0,size,HintState.CORRECT);
         for (Integer x : index_color_not_exist) {
             this.hints[x] = HintState.COLOR_NOT_EXIST;
         }
@@ -31,5 +31,4 @@ public class Hint {
     public String get_hint(int index){
         return this.hints[index].toString();
     }
-
 }

@@ -261,6 +261,7 @@ public class MainWindow extends JFrame {
                     label.setBackground(Color.RED);
                     break;
             }
+            label.setOpaque(true);
         }
     }
 }
