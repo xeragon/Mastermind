@@ -14,13 +14,13 @@ public class Round {
     private Integer index_current_guess = 0;
     private Integer combination_size ;
 
-    public Round(int nb_guess, int combination_size){
+    public Round(int nb_guess, int combination_size,int nb_colors_availaible){
         this.combination_size = combination_size;
         this.hints = new Hint[nb_guess];
         this.combinations = new Combination[nb_guess];
         Arrays.fill(combinations, new Combination(combination_size));
         this.secret_combination = new Combination(combination_size);
-        this.secret_combination.random();
+        this.secret_combination.random(nb_colors_availaible);
 
     }
     public Combination get_secret_combination(){

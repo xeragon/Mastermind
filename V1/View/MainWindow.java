@@ -3,13 +3,13 @@ package V1.View;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import V1.Controller.GameController;
-import V1.Model.Combination;
-import V1.Model.Game;
-import V1.Model.Round;
+import V1.Model.*;
+
 
 public class MainWindow extends JFrame {
     private HintDisplayMode hint_display_mode;
@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pnlPrincipal = new JPanel(new BorderLayout());
-        pnlTries = new JPanel(new GridLayout(game.get_combination_size(), 1));
+        pnlTries = new JPanel(new GridLayout(game.get_nb_guess(), 1));
 
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
         JPanel pnlHint = new JPanel(new GridLayout(1, game.get_nb_guess())); // Regrouppe tout les panels de hint
@@ -81,6 +81,9 @@ public class MainWindow extends JFrame {
                 pnlTries.add(get_combination_panel(game.get_current_round().get_combinations()[game.get_nb_guess_taken()],game.get_combination_size()));
                 repaint();
                 revalidate();
+            }
+            else{
+                JOptionPane.showInternalMessageDialog(null,"you are a looser !");
             }
         } else {
             JOptionPane.showInternalMessageDialog(null,"you must set the all the colors of the combination before submiting");
@@ -208,12 +211,17 @@ public class MainWindow extends JFrame {
     private JPanel available_colors() {
         JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible() % game.get_combination_size(),
                 game.get_combination_size()));
-        res.add(get_color_button(V1.Model.Color.RED));
-        res.add(get_color_button(V1.Model.Color.BLUE));
-        res.add(get_color_button(V1.Model.Color.GREEN));
-        res.add(get_color_button(V1.Model.Color.YELLOW));
-        res.add(get_color_button(V1.Model.Color.PURPLE));
-        res.add(get_color_button(V1.Model.Color.PINK));
+
+        // res.add(get_color_button(V1.Model.Color.RED));
+        // res.add(get_color_button(V1.Model.Color.BLUE));
+        // res.add(get_color_button(V1.Model.Color.GREEN));
+        // res.add(get_color_button(V1.Model.Color.YELLOW));
+        // res.add(get_color_button(V1.Model.Color.PURPLE));
+        // res.add(get_color_button(V1.Model.Color.PINK));
+
+        for (int i = 0; i < game.get_nb_color_availaible(); i++) {
+            res.add(get_color_button(V1.Model.Color.values()[i]));
+        }
         return res;
     }
 

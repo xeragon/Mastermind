@@ -23,15 +23,15 @@ public class Game {
         this.nb_guess = nb_guess;
         this.nb_color_availaible = nb_color_availaible;
         this.rounds = new Round[nb_round];
-        Arrays.fill(this.rounds, new Round(nb_guess,combination_size));
+        Arrays.fill(this.rounds, new Round(nb_guess,combination_size,nb_color_availaible));
         
     }
     public boolean can_continue_guess(){
+        nb_guess_taken++;
         boolean r = false;
         if(nb_guess_taken < nb_guess){
             r = true;
         }
-        nb_guess_taken++;
         System.out.println(r);
         return r;
     }

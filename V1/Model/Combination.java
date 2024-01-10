@@ -47,11 +47,11 @@ public class Combination {
         return new Hint(index_color_wrong_place,index_color_not_exist,s);
     }   
         
-    public void random(){
+    public void random(int nb_colors_availaible){
         int n;
         Random rand = new Random();
         for (int i = 0; i < this.colors.length; i++) {
-            n = rand.nextInt(Color.values().length-1);
+            n = rand.nextInt(nb_colors_availaible);
             this.colors[i] = Color.values()[n];
         }
     }

@@ -8,7 +8,7 @@ import V1.Model.*;
 
 public class GameController {
     private MainWindow window;
-    private Game game = new Game(3, 5, 5, 5);
+    private Game game = new Game(3, 4, 3, 5);
     
     
     public GameController(){}
