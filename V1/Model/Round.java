@@ -63,6 +63,7 @@ public class Round {
     public void set_combination(Combination combination, int index){
         this.combinations[index] = combination;
     }
+    public void set_hints(Hint hint, int index){this.hints[index] = hint;}
 
 
     

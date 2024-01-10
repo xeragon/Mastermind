@@ -52,9 +52,10 @@ public class MainWindow extends JFrame {
             Combination combination = convert_to_combination((JPanel)pnlTries.getComponent(current_round.get_nb_guess_taken()));
             Hint hint = combination.compare_to(current_round.get_secret_combination());
             set_panel_hints((JPanel)combi.getComponent(game.get_combination_size()),hint);
+            // enregistrer la combi et les hints
+            is_win = game_controller.submit_guess(combination, hint);
 
-            is_win = game_controller.submit_guess(get_combination_colors_from_panel(combi));
-            
+
             for (Component c : combi.getComponents()) {
                 c.setEnabled(false);
             }
@@ -189,15 +190,6 @@ public class MainWindow extends JFrame {
         return null;
     }
 
-    private V1.Model.Color[] get_combination_colors_from_panel(JPanel panel){
-        V1.Model.Color[] colors = new V1.Model.Color[game.get_combination_size()];
-        Component[] components = panel.getComponents();
-        for(int i = 0 ; i < game.get_combination_size();i++){
-            colors[i] = convert_to_color(components[i].getBackground());
-        }
-        return colors;
-    }
-
     private JPanel available_colors() {
         JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible() % game.get_combination_size(),
                 game.get_combination_size()));
@@ -261,6 +253,7 @@ public class MainWindow extends JFrame {
                     label.setBackground(Color.RED);
                     break;
             }
+            label.setOpaque(true);
         }
     }
 }

@@ -18,10 +18,11 @@ public class GameController {
         window.display_game();
     }
 
-    public boolean submit_guess(V1.Model.Color[] colors ){
+    public boolean submit_guess(Combination combination, Hint hint){
         Round current_round = game.get_current_round();
         int current_guess_index = game.get_current_round().get_nb_guess_taken();
-        current_round.set_combination(new Combination(colors),current_guess_index);
+        current_round.set_combination(combination,current_guess_index);
+        current_round.set_hints(hint, current_guess_index);
         if(Arrays.compare(current_round.get_secret_combination().colors,current_round.get_combinations()[current_round.get_nb_guess_taken()].colors) == 0){
             window.display_win();
             return true; // if win return true so display knows he won 
