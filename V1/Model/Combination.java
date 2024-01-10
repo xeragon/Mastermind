@@ -26,6 +26,9 @@ public class Combination {
     public Color get_color(int index){
         return colors[index];
     }
+    public Color [] get_colors(){
+        return this.colors;
+    }
     public void set_color(Integer index, Color color){
         this.colors[index] = color;
     }
@@ -36,7 +39,7 @@ public class Combination {
         ArrayList<Integer> index_color_wrong_place = new ArrayList<Integer>();
         for (int i = 0; i < s; i++) {
             if (this.colors[i] != combination.colors[i]){
-                if (!Arrays.asList(combination.colors).contains(this.colors[i])) {
+                if (!Arrays.asList(combination.get_colors()).contains(this.colors[i])) {
                     index_color_not_exist.add(i);
                 }
                 else{

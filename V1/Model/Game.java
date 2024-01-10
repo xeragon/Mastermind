@@ -4,46 +4,49 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import V1.Controller.GameController;
+
 public class Game {
     private Color selected_color = Color.BLUE;
+
+    private GameController game_controller;
 
     private int nb_round;
     private int combination_size;
     private int nb_guess;
     private int nb_color_availaible;
 
-    private int nb_guess_taken = 0;
 
     private Round [] rounds; 
     private int index_current_round = 0 ;
 
-    public Game(int nb_round, int combination_size,int nb_guess,int nb_color_availaible){
+    public Game(GameController game_controller,int nb_round, int combination_size,int nb_guess,int nb_color_availaible){
+        this.game_controller = game_controller;
         this.nb_round = nb_round;
         this.combination_size = combination_size;
         this.nb_guess = nb_guess;
         this.nb_color_availaible = nb_color_availaible;
         this.rounds = new Round[nb_round];
-        Arrays.fill(this.rounds, new Round(nb_guess,combination_size,nb_color_availaible));
-        
-    }
-    public boolean can_continue_guess(){
-        nb_guess_taken++;
-        boolean r = false;
-        if(nb_guess_taken < nb_guess){
-            r = true;
+        for (int i = 0; i < nb_round; i++) {
+            rounds[i] = new Round(game_controller, nb_guess, combination_size, nb_color_availaible);
         }
-        System.out.println(r);
-        return r;
     }
-    public void start(){
-        this.rounds[this.index_current_round].display_game();
-        this.rounds[this.index_current_round].listen_for_combi();
-    }
+
+    // public void start(){
+    //     this.rounds[this.index_current_round].display_game();
+    //     this.rounds[this.index_current_round].listen_for_combi();
+    // }
     public Color get_current_color(){
         return selected_color;
     }
     public Round get_current_round(){
         return this.rounds[this.index_current_round];
+    }
+    public int get_current_round_index(){
+        return this.index_current_round;
+    }
+    public void increment_index_current_round(){
+        this.index_current_round++;
     }
     public int get_combination_size() {
         return combination_size;
@@ -54,9 +57,7 @@ public class Game {
     public int get_nb_guess() {
         return nb_guess;
     }
-    public int get_nb_guess_taken() {
-        return nb_guess_taken;
-    }
+
     public int get_nb_round() {
         return nb_round;
     }
