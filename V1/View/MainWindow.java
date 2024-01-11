@@ -97,7 +97,6 @@ public class MainWindow extends JFrame {
         JPanel pnl_menu = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-
         c.weightx = 1;
 
         c.weighty = 0.1;
@@ -126,13 +125,11 @@ public class MainWindow extends JFrame {
         hard_button.addActionListener(e -> {game.set_difficulty(2);
         });
 
-
         //Group the radio buttons.
         ButtonGroup group = new ButtonGroup();
         group.add(easy_button);
         group.add(normal_button);
         group.add(hard_button);
-
 
         c.gridx = 1;
         pnl_menu.add(easy_button, c);
@@ -238,11 +235,51 @@ public class MainWindow extends JFrame {
         // non non je vous jure y'a rien a voir
         setSize(499, 800);
         setSize(500, 800);
-        // on avait pas le choix pour forcer l'actualisation de la backgroundImage... 
+        // on avait pas le choix pour forcer l'actualisation de la backgroundImage...
 
         repaint();
         revalidate();
-        }
+    }
+
+    public void display_stats(){
+        System.out.println("display stats");
+        backgroundPanel.removeAll(); // pour reset le panel
+        JPanel pnl_menu = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 0.1;
+
+        // afficher le resumé
+
+        // boutons
+        c.gridx = 0;
+        c.gridy ++;
+        JButton play_button = new JButton();
+        play_button.setBackground(Color.LIGHT_GRAY);
+
+        play_button.setText("Rejouer");
+        play_button.addActionListener(actionEvent -> {
+            game_controller.start_game();
+        });
+        play_button.setEnabled(true);
+        pnl_menu.add(play_button, c);
+
+        c.gridx ++;
+        JButton menu_button = new JButton();
+        menu_button.setBackground(Color.LIGHT_GRAY);
+
+        menu_button.setText("Menu");
+        menu_button.addActionListener(actionEvent -> {
+            game_controller.show_menu();
+        });
+        menu_button.setEnabled(true);
+        pnl_menu.add(menu_button, c);
+
+        backgroundPanel.add(pnl_menu);
+        revalidate();
+        repaint();
+    }
         
         
     // Transforme une combination en JPanel
@@ -328,6 +365,7 @@ public class MainWindow extends JFrame {
         for (int i = 0; i < game.get_nb_color_availaible(); i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
+        res.setOpaque(false);
         
         return res;
     }
