@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
         if (is_combinaison_panel_set(combi)) {
             // le code des hints ici
             Combination combination = convert_to_combination((JPanel)pnlTries.getComponent(current_round.get_nb_guess_taken()));
-            Hint hint = combination.compare_to(current_round.get_secret_combination());
+            Hint hint = combination.compare_to(current_round.get_secret_combination(), game.get_difficulty());
             set_panel_hints((JPanel)combi.getComponent(game.get_combination_size()),hint);
             // enregistrer la combi et les hints
             is_win = game_controller.submit_guess(combination, hint);
