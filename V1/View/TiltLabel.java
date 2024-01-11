@@ -22,8 +22,8 @@ public class TiltLabel extends JLabel {
 
         Graphics2D g2d = (Graphics2D) grphcs.create();
         
-        // g2d.drawString("vide", 1, 1);
-        // g2d.rotate(Math.PI/2);
+        //g2d.drawString("vide", 1, 1);
+        //g2d.rotate(Math.PI/2);
 
         super.paintComponent(g2d);
     }
