@@ -14,12 +14,13 @@ public class BackgroundPanel extends JPanel
     private Image background;
     public BackgroundPanel()
     {
-        Image background = Toolkit.getDefaultToolkit().createImage("/home/xeragon/Bureau/BUT_S3/A31/saeA31/a31-mastermind/V1/Ressource/scroll.jpg");
+        Image background = Toolkit.getDefaultToolkit().createImage("V1/Ressource/scroll.jpg");
         this.background = background;
         setLayout( new BorderLayout() );
-        // setBackground(Color.CYAN);
         setOpaque(true);
-
+        revalidate();
+        repaint();
+        // setBackground(Color.CYAN);
     }
  
     @Override
