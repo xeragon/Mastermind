@@ -138,9 +138,22 @@ public class MainWindow extends JFrame {
         c.gridx ++;
         pnl_menu.add(hard_button, c);
 
+        // autres param de partie :
+        //nb round :
+        JTextField nb_round = new JTextField("3");
+
+        //Combinaison size :
+        JTextField combinaison_size = new JTextField("4");
+
+        // nb guess
+        JTextField nb_guess = new JTextField("4");
+
+        //nb available colors
+        JTextField available_colors = new JTextField("8");
 
 
-        c.gridy = 1;
+
+        c.gridy ++;
         c.gridx = 0;
         JButton play_button = new JButton();
         play_button.setBackground(Color.LIGHT_GRAY);
@@ -362,7 +375,7 @@ public class MainWindow extends JFrame {
     private JPanel available_colors() {
         JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_availaible()+1));
         res.setBackground(Color.DARK_GRAY);
-        for (int i = 0; i < game.get_nb_color_availaible(); i++) {
+        for (int i = 0; i < game.get_nb_color_availaible() && i < V1.Model.Color.values().length; i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
         res.setOpaque(false);

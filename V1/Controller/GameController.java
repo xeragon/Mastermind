@@ -21,7 +21,7 @@ public class GameController {
 
     public void start_game(){
         window.dispose();
-        game = new Game(this,2, 2, 3, 5);
+        game = new Game(this,2, 2, 3, 8);
         window = new MainWindow(game, this);
         window.display_game();
     }
