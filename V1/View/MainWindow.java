@@ -104,15 +104,23 @@ public class MainWindow extends JFrame {
         JRadioButton easy_button = new JRadioButton("Facile");
         easy_button.setMnemonic(KeyEvent.VK_B);
         easy_button.setActionCommand("Facile");
+        easy_button.addActionListener(e -> {
+            game.set_difficulty(0);
+        });
         easy_button.setSelected(true);
 
         JRadioButton normal_button = new JRadioButton("Normal");
         normal_button.setMnemonic(KeyEvent.VK_B);
         normal_button.setActionCommand("Normal");
+        normal_button.addActionListener(e -> {
+            game.set_difficulty(1);
+        });
 
         JRadioButton hard_button = new JRadioButton("Difficile");
         hard_button.setMnemonic(KeyEvent.VK_B);
         hard_button.setActionCommand("Difficile");
+        hard_button.addActionListener(e -> {game.set_difficulty(2);
+        });
 
 
         //Group the radio buttons.
@@ -120,6 +128,7 @@ public class MainWindow extends JFrame {
         group.add(easy_button);
         group.add(normal_button);
         group.add(hard_button);
+
 
         c.gridx = 1;
         pnl_menu.add(easy_button, c);
