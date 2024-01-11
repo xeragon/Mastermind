@@ -2,6 +2,8 @@ package V1.View;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -19,6 +21,8 @@ public class MainWindow extends JFrame {
     private JPanel pnlSecret; // combinaison secrete
     private JPanel pnlTries; // Regrouppe tout les panels de combinaison
     private JPanel pnl_head; // Regrouppe tout les panels de combinaison
+
+    final Color EMPTY_COLOR = new Color(70,70,70);
 
     private V1.Model.Color last_color = V1.Model.Color.RED;
     private Game game;
@@ -38,7 +42,7 @@ public class MainWindow extends JFrame {
     private boolean is_combinaison_panel_set(JPanel combinaison_panel) {
         boolean r = true;
         for (Component c : combinaison_panel.getComponents()) {
-            if (c.getBackground() == Color.BLACK) {
+            if (c.getBackground() == EMPTY_COLOR) {
                 r = false;
             }
         }
@@ -161,18 +165,18 @@ public class MainWindow extends JFrame {
     public void display_win(){
         JOptionPane.showInternalMessageDialog(null,"you won !!!");
     }
-
-
+    
+    
     public void display_game() {
         backgroundPanel.removeAll(); // pour reset le panel 
-
+        
         Round current_round = game.get_current_round();
-
+        
         pnlPrincipal = new JPanel();
         pnlPrincipal.setLayout(new GridBagLayout());
-        
         pnlPrincipal.setOpaque(false);
         backgroundPanel.add(pnlPrincipal,BorderLayout.CENTER);
+        
         
         
         pnl_head = new PanelHead(game.get_current_round_index(),game.get_nb_guess());
@@ -182,12 +186,12 @@ public class MainWindow extends JFrame {
         pnlTries.setOpaque(false);
         pnlSecret = new JPanel(new GridLayout(1, game.get_combination_size()));
         JPanel pnl_available_colors = available_colors(); // Regrouppe tout les boutons de couleur
-
-
+        
+        
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
         
         GridBagConstraints c = new GridBagConstraints();
-
+        
         c.fill = GridBagConstraints.BOTH;
         
         c.weightx = 1; 
@@ -196,7 +200,7 @@ public class MainWindow extends JFrame {
         c.gridy = 0;
         
         pnlPrincipal.add(pnl_head,c);
-
+        
         
         c.weighty = 0.6;
         c.gridy = 1;
@@ -222,20 +226,18 @@ public class MainWindow extends JFrame {
         pnl_available_colors.add(submit_button);
         
         // afficher combi secrete :
-
+        
         // Component[] components = get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()).getComponents();
         // for (Component component : components) {
-        //     pnlSecret.add(component);
-        // }
-        
+            //     pnlSecret.add(component);
+            // }
+            
         pnlTries.add(get_combination_panel(current_round.get_combinations()[0], game.get_combination_size()));
-
         repaint();
         revalidate();
-
-    }
-
-
+        }
+        
+        
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
         CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
@@ -245,10 +247,12 @@ public class MainWindow extends JFrame {
         JPanel pnl_hint = new JPanel(new GridLayout(1, game.get_combination_size())); // 1 panel de Hint par combinaison
         for (int i = 0; i < game.get_combination_size(); i++) {
 
-            TiltLabel lbl_hint = new TiltLabel("hint " + Integer.toString(i));
-
+            RoundColorButton lbl_hint = new RoundColorButton();
+            lbl_hint.setEnabled(false);
+            lbl_hint.setBackground(Color.LIGHT_GRAY);
             pnl_hint.add(lbl_hint);
         }
+        pnl_hint.setOpaque(false);
         combination_panel.add(pnl_hint);
         repaint();
         revalidate();
@@ -284,7 +288,7 @@ public class MainWindow extends JFrame {
     public Color convert_color(V1.Model.Color color) {
 
         if (color == null) {
-            return Color.BLACK;
+            return EMPTY_COLOR;
         }
         switch (color) {
             case RED:
@@ -352,20 +356,18 @@ public class MainWindow extends JFrame {
     private void set_panel_hints(JPanel panel, Hint hint) {
         Component[] components = panel.getComponents();
         for (int i = 0; i < game.get_combination_size(); i++) {
-            JLabel label = (JLabel) components[i];
-            label.setText(hint.get_hint(i));
+            RoundColorButton pawn = (RoundColorButton) components[i];
             switch(hint.get_hint(i)){
                 case "CORRECT" :
-                label.setBackground(Color.GREEN);
+                pawn.setBackground(Color.BLACK);
                 break;
                 case "COLOR_WRONG_PLACE" :
-                label.setBackground(Color.YELLOW);
+                pawn.setBackground(Color.WHITE);
                 break;
                 case "COLOR_NOT_EXIST" :
-                label.setBackground(Color.RED);
+                pawn.setBackground(Color.LIGHT_GRAY);
                 break;
             }
-            label.setOpaque(true);
         }
     }
 }
