@@ -13,9 +13,11 @@ import V1.Model.*;
 
 public class MainWindow extends JFrame {
     private HintDisplayMode hint_display_mode;
+    private BackgroundPanel backgroundPanel;
     private JPanel pnlPrincipal;
     private JPanel pnlSecret; // combinaison secrete
     private JPanel pnlTries; // Regrouppe tout les panels de combinaison
+    private JPanel pnl_head; // Regrouppe tout les panels de combinaison
 
     private V1.Model.Color last_color = V1.Model.Color.RED;
     private Game game;
@@ -25,8 +27,10 @@ public class MainWindow extends JFrame {
         super("MasterMind"); // ou setTitle("My app")
         this.game = game;
         this.game_controller = game_controller;
-        setSize(500, 500);
+        setSize(500, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        backgroundPanel = new BackgroundPanel();
+        setContentPane(backgroundPanel);
         setVisible(true);
     }
 
@@ -40,6 +44,7 @@ public class MainWindow extends JFrame {
         return r;
     }
 
+    
     private void submit_guess() {
         // set color et faut gerer si c'est la current combi
         boolean is_win = false;
@@ -76,7 +81,12 @@ public class MainWindow extends JFrame {
             JOptionPane.showInternalMessageDialog(null,"you must set the all the colors of the combination before submiting");
         }
     }
+    public void increment_nb_guesses_left(){
+  
+        JLabel l =  (JLabel) pnl_head.getComponent(1);
+        l.setText("guesses left : " + Integer.toString(game.get_nb_guess()-game.get_current_round().get_nb_guess_taken()));
 
+    }
     private void display_menu() {
 
     }
@@ -85,23 +95,52 @@ public class MainWindow extends JFrame {
     }
 
     public void display_game() {
+        backgroundPanel.removeAll(); // pour reset le panel 
+
         Round current_round = game.get_current_round();
-        System.out.println("current round index : " +  Integer.toString(game.get_current_round_index()));
+
+        pnlPrincipal = new JPanel();
+        pnlPrincipal.setLayout(new GridBagLayout());
         
-        pnlPrincipal = new JPanel(new BorderLayout());
-        pnlTries = new JPanel(new GridLayout(game.get_nb_guess(), 1));
-        PanelRound pnl_test = new PanelRound();
+        pnlPrincipal.setOpaque(false);
+        backgroundPanel.add(pnlPrincipal,BorderLayout.CENTER);
+        
+        
+        pnl_head = new PanelHead(game.get_current_round_index(),game.get_nb_guess());
+        
+        // pnlTries = new JPanel(new GridLayout(game.get_nb_guess(), 1));
+        pnlTries = new JPanel(new GridLayout(12,1));
+        pnlTries.setOpaque(false);
+        pnlSecret = new JPanel(new GridLayout(1, game.get_combination_size()));
+        JPanel pnl_available_colors = available_colors(); // Regrouppe tout les boutons de couleur
+
 
         // JPanel pnlCombination = new JPanel(new GridLayout(5, 1));
-        JPanel pnl_available_colors = available_colors(); // Regrouppe tout les boutons de couleur
         
-        pnlSecret = new JPanel(new GridLayout(1, game.get_combination_size()));
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
         
-        setContentPane(pnlPrincipal);
-        pnlPrincipal.add(pnlSecret, BorderLayout.NORTH);
-        pnlPrincipal.add(pnlTries, BorderLayout.CENTER);
+        c.weightx = 1; 
         
-        pnlPrincipal.add(pnl_available_colors, BorderLayout.SOUTH);
+        c.weighty = 0.1;
+        c.gridy = 0;
+        
+        pnlPrincipal.add(pnl_head,c);
+
+        
+        c.weighty = 0.6;
+        c.gridy = 1;
+        
+        pnlPrincipal.add(pnlTries,c);
+        
+        
+        c.weighty = 0.05;
+        c.gridy = 2;
+        
+        pnlPrincipal.add(pnl_available_colors,c);
+        
+        // pnlPrincipal.add(pnlSecret,c);
         
         JButton submit_button = new JButton();
         submit_button.setBackground(Color.LIGHT_GRAY);
@@ -115,10 +154,10 @@ public class MainWindow extends JFrame {
         
         // afficher combi secrete :
 
-        Component[] components = get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()).getComponents();
-        for (Component component : components) {
-            pnlSecret.add(component);
-        }
+        // Component[] components = get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()).getComponents();
+        // for (Component component : components) {
+        //     pnlSecret.add(component);
+        // }
         
         pnlTries.add(get_combination_panel(current_round.get_combinations()[0], game.get_combination_size()));
 
@@ -126,6 +165,7 @@ public class MainWindow extends JFrame {
         revalidate();
 
     }
+
 
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
@@ -161,7 +201,7 @@ public class MainWindow extends JFrame {
 
     // transforme la couleur selectionnable en bouton
     public JButton get_color_button(V1.Model.Color color) {
-        JButton combination_button = new JButton();
+        RoundColorButton combination_button = new RoundColorButton();
         combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             this.last_color = color;
@@ -195,9 +235,8 @@ public class MainWindow extends JFrame {
     }
 
     private JPanel available_colors() {
-        JPanel res = new JPanel(new GridLayout(game.get_nb_color_availaible() % game.get_combination_size(),
-                game.get_combination_size()));
-
+        JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_availaible()+1));
+        res.setBackground(Color.DARK_GRAY);
         for (int i = 0; i < game.get_nb_color_availaible(); i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
