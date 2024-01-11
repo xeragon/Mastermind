@@ -29,6 +29,7 @@ public class GameController {
             
         }   
         current_round.increment_nb_guess_taken();
+        window.increment_nb_guesses_left();
         return false;
     }
 
