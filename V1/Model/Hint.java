@@ -14,8 +14,7 @@ public class Hint {
         this.index_color_not_exist = index_color_not_exist;
         this.hints = new HintState[size];
         Arrays.fill(hints, 0,size,HintState.CORRECT);
-
-        System.out.println("Difficulty = " + difficulty + " Wrong = " + index_color_wrong_place.size() + " Not exist = " + index_color_not_exist.size());
+        
         switch(difficulty) {
             case 0:
                 display_easy(size);
@@ -64,7 +63,6 @@ public class Hint {
 
 
     public String get_hint(int index){
-        System.out.println("required hint = " + this.hints[index]);
         return this.hints[index].toString();
     }
 }

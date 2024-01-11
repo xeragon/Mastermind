@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -87,12 +88,80 @@ public class MainWindow extends JFrame {
         l.setText("guesses left : " + Integer.toString(game.get_nb_guess()-game.get_current_round().get_nb_guess_taken()));
 
     }
-    private void display_menu() {
+    public void display_menu() {
+        backgroundPanel.removeAll(); // pour reset le panel
+        JPanel pnl_menu = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+
+        c.weightx = 1;
+
+        c.weighty = 0.1;
+        c.gridy = 0;
+        pnl_menu.add(new JLabel("Choix de la difficulté : "),c);
+
+        // RadioButton pour le choix de la difficultée
+        JRadioButton easy_button = new JRadioButton("Facile");
+        easy_button.setMnemonic(KeyEvent.VK_B);
+        easy_button.setActionCommand("Facile");
+        easy_button.addActionListener(e -> {
+            game.set_difficulty(0);
+        });
+        easy_button.setSelected(true);
+
+        JRadioButton normal_button = new JRadioButton("Normal");
+        normal_button.setMnemonic(KeyEvent.VK_B);
+        normal_button.setActionCommand("Normal");
+        normal_button.addActionListener(e -> {
+            game.set_difficulty(1);
+        });
+
+        JRadioButton hard_button = new JRadioButton("Difficile");
+        hard_button.setMnemonic(KeyEvent.VK_B);
+        hard_button.setActionCommand("Difficile");
+        hard_button.addActionListener(e -> {game.set_difficulty(2);
+        });
+
+
+        //Group the radio buttons.
+        ButtonGroup group = new ButtonGroup();
+        group.add(easy_button);
+        group.add(normal_button);
+        group.add(hard_button);
+
+
+        c.gridx = 1;
+        pnl_menu.add(easy_button, c);
+        c.gridx ++;
+        pnl_menu.add(normal_button, c);
+        c.gridx ++;
+        pnl_menu.add(hard_button, c);
+
+
+
+        c.gridy = 1;
+        c.gridx = 0;
+        JButton play_button = new JButton();
+        play_button.setBackground(Color.LIGHT_GRAY);
+
+        play_button.setText("Jouer");
+        play_button.addActionListener(actionEvent -> {
+            game_controller.start_game();
+        });
+        play_button.setEnabled(true);
+        pnl_menu.add(play_button, c);
+
+        backgroundPanel.add(pnl_menu);
+
+
+        revalidate();
+        repaint();
 
     }
     public void display_win(){
         JOptionPane.showInternalMessageDialog(null,"you won !!!");
     }
+
 
     public void display_game() {
         backgroundPanel.removeAll(); // pour reset le panel 
