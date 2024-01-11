@@ -8,7 +8,7 @@ import V1.Model.*;
 
 public class GameController {
     private MainWindow window;
-    private Game game = new Game(this,3, 6, 3, 5);
+    private Game game;
     
     
     public GameController(){
@@ -20,6 +20,9 @@ public class GameController {
     }
 
     public void start_game(){
+        window.dispose();
+        game = new Game(this,2, 2, 3, 8);
+        window = new MainWindow(game, this);
         window.display_game();
     }
 
@@ -41,6 +44,7 @@ public class GameController {
     public void end_round(){
         if(game.get_current_round_index()+1 == game.get_nb_round()){
             System.out.println("end of game");
+            window.display_stats();
         }
         else{
             game.increment_index_current_round();
