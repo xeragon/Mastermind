@@ -11,10 +11,15 @@ public class GameController {
     private Game game = new Game(this,3, 6, 3, 5);
     
     
-    public GameController(){}
+    public GameController(){
+        window = new MainWindow(game, this);
+    }
+
+    public void show_menu(){
+        window.display_menu();
+    }
 
     public void start_game(){
-        window = new MainWindow(game, this);
         window.display_game();
     }
 
