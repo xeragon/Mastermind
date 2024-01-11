@@ -169,15 +169,15 @@ public class MainWindow extends JFrame {
     
     public void display_game() {
         backgroundPanel.removeAll(); // pour reset le panel 
-        
+
         Round current_round = game.get_current_round();
-        
+
         pnlPrincipal = new JPanel();
         pnlPrincipal.setLayout(new GridBagLayout());
         pnlPrincipal.setOpaque(false);
         backgroundPanel.add(pnlPrincipal,BorderLayout.CENTER);
-        
-        
+
+
         
         pnl_head = new PanelHead(game.get_current_round_index(),game.get_nb_guess());
         
@@ -233,6 +233,13 @@ public class MainWindow extends JFrame {
             // }
             
         pnlTries.add(get_combination_panel(current_round.get_combinations()[0], game.get_combination_size()));
+
+        // surtout ne regardez pas ça
+        // non non je vous jure y'a rien a voir
+        setSize(499, 800);
+        setSize(500, 800);
+        // on avait pas le choix pour forcer l'actualisation de la backgroundImage... 
+
         repaint();
         revalidate();
         }
@@ -244,13 +251,21 @@ public class MainWindow extends JFrame {
         for (int i = 0; i < combination_size; i++) {
             combination_panel.add(get_combination_button(combination.get_color(i)));
         }
-        JPanel pnl_hint = new JPanel(new GridLayout(1, game.get_combination_size())); // 1 panel de Hint par combinaison
-        for (int i = 0; i < game.get_combination_size(); i++) {
 
-            RoundColorButton lbl_hint = new RoundColorButton();
-            lbl_hint.setEnabled(false);
-            lbl_hint.setBackground(Color.LIGHT_GRAY);
-            pnl_hint.add(lbl_hint);
+        JPanel pnl_hint;
+        if(game.get_difficulty() < 2) {
+            pnl_hint = new JPanel(new GridLayout(1, game.get_combination_size())); // 1 panel de Hint par combinaison
+            for (int i = 0; i < game.get_combination_size(); i++) {
+
+                RoundColorButton lbl_hint = new RoundColorButton();
+                lbl_hint.setEnabled(false);
+                lbl_hint.setBackground(Color.LIGHT_GRAY);
+                pnl_hint.add(lbl_hint);
+            }
+        }else{
+            pnl_hint = new JPanel(new GridLayout(2, 1)); // 1 panel de Hint par combinaison
+            pnl_hint.add(new JLabel("Correct : "));
+            pnl_hint.add(new JLabel("faux : "));
         }
         pnl_hint.setOpaque(false);
         combination_panel.add(pnl_hint);
@@ -354,19 +369,38 @@ public class MainWindow extends JFrame {
     }
 
     private void set_panel_hints(JPanel panel, Hint hint) {
-        Component[] components = panel.getComponents();
-        for (int i = 0; i < game.get_combination_size(); i++) {
-            RoundColorButton pawn = (RoundColorButton) components[i];
-            switch(hint.get_hint(i)){
-                case "CORRECT" :
-                pawn.setBackground(Color.BLACK);
-                break;
-                case "COLOR_WRONG_PLACE" :
-                pawn.setBackground(Color.WHITE);
-                break;
-                case "COLOR_NOT_EXIST" :
-                pawn.setBackground(Color.LIGHT_GRAY);
-                break;
+        // pour un affichage numerique
+        if(game.get_difficulty() == 2){
+            int correct = 0;
+
+            for (int i = 0; i < game.get_combination_size(); i++) {
+                if(hint.get_hint(i) == "CORRECT")
+                    correct ++;
+                else
+                    break;
+            }
+            int wrong = game.get_combination_size() - correct;
+            Component[] components = panel.getComponents();
+            JLabel nb_correct = (JLabel)components[0];
+            JLabel nb_wrong = (JLabel)components[1];
+            nb_correct.setText("Correct : " + correct);
+            nb_wrong.setText("Faux : " + wrong);
+
+        }else {
+            Component[] components = panel.getComponents();
+            for (int i = 0; i < game.get_combination_size(); i++) {
+                RoundColorButton pawn = (RoundColorButton) components[i];
+                switch (hint.get_hint(i)) {
+                    case "CORRECT":
+                        pawn.setBackground(Color.BLACK);
+                        break;
+                    case "COLOR_WRONG_PLACE":
+                        pawn.setBackground(Color.WHITE);
+                        break;
+                    case "COLOR_NOT_EXIST":
+                        pawn.setBackground(Color.LIGHT_GRAY);
+                        break;
+                }
             }
         }
     }
