@@ -27,12 +27,16 @@ public class MainWindow extends JFrame {
     private V1.Model.Color last_color = V1.Model.Color.RED;
     private Game game;
     private GameController game_controller;
+    
+    private DisplayType display_type = DisplayType.CLASSIC;
 
     public MainWindow(Game game, GameController game_controller) {
         super("MasterMind"); // ou setTitle("My app")
         this.game = game;
         this.game_controller = game_controller;
-        setSize(500, 800);
+        setSize(500, 850);
+        setMinimumSize(new Dimension(500,850));
+        setMaximumSize(new Dimension(500,850));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         backgroundPanel = new BackgroundPanel();
         setContentPane(backgroundPanel);
@@ -48,6 +52,8 @@ public class MainWindow extends JFrame {
         }
         return r;
     }
+
+
 
     
     private void submit_guess() {
@@ -94,84 +100,86 @@ public class MainWindow extends JFrame {
     }
     public void display_menu() {
         backgroundPanel.removeAll(); // pour reset le panel
+
+        BackgroundPanel background = new BackgroundPanel();
+
         JPanel pnl_menu = new JPanel(new GridBagLayout());
+        PanelDisplayChoice display_choice = new PanelDisplayChoice();
+        PanelRoundChoice round_choice = new PanelRoundChoice();
+        PanelColorAvailableChoice color_available_choice = new PanelColorAvailableChoice();
+        CombinationSizeChoice combination_size_choice  = new CombinationSizeChoice();
+        NbGuessChoice nb_guess_choice  = new NbGuessChoice();
+        background.add(pnl_menu,BorderLayout.CENTER);
+        
+        
+        
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
+        
         c.weightx = 1;
-
-        c.weighty = 0.1;
+        
+        
         c.gridy = 0;
-        pnl_menu.add(new JLabel("Choix de la difficulté : "),c);
-
-        // RadioButton pour le choix de la difficultée
-        JRadioButton easy_button = new JRadioButton("Facile");
-        easy_button.setMnemonic(KeyEvent.VK_B);
-        easy_button.setActionCommand("Facile");
-        easy_button.addActionListener(e -> {
-            game.set_difficulty(0);
-        });
-        easy_button.setSelected(true);
-
-        JRadioButton normal_button = new JRadioButton("Normal");
-        normal_button.setMnemonic(KeyEvent.VK_B);
-        normal_button.setActionCommand("Normal");
-        normal_button.addActionListener(e -> {
-            game.set_difficulty(1);
-        });
-
-        JRadioButton hard_button = new JRadioButton("Difficile");
-        hard_button.setMnemonic(KeyEvent.VK_B);
-        hard_button.setActionCommand("Difficile");
-        hard_button.addActionListener(e -> {game.set_difficulty(2);
-        });
-
-        //Group the radio buttons.
-        ButtonGroup group = new ButtonGroup();
-        group.add(easy_button);
-        group.add(normal_button);
-        group.add(hard_button);
-
-        c.gridx = 1;
-        pnl_menu.add(easy_button, c);
-        c.gridx ++;
-        pnl_menu.add(normal_button, c);
-        c.gridx ++;
-        pnl_menu.add(hard_button, c);
-
-        // autres param de partie :
-        //nb round :
-        JTextField nb_round = new JTextField("3");
-
-        //Combinaison size :
-        JTextField combinaison_size = new JTextField("4");
-
-        // nb guess
-        JTextField nb_guess = new JTextField("4");
-
-        //nb available colors
-        JTextField available_colors = new JTextField("8");
-
-
-
-        c.gridy ++;
+        
+        
+        
         c.gridx = 0;
+        
+        c.insets = new Insets(50, 10, 0,10);
+        c.weighty = 0.1;
+        JPanel title = new JPanel();
+        title.setOpaque(false);
+        JLabel label = new JLabel("Mastermind");
+        label.setFont(new Font("Serif", Font.BOLD, 32));
+        title.add(label);
+        pnl_menu.add(title,c);
+        c.insets = new Insets(20, 10, 0,10);
+        
+        c.weightx = 1;
+        c.weighty = 0.2;
+        c.gridy++;
+        pnl_menu.add(round_choice,c);
+        c.weighty = 0.2;
+        c.gridy++;
+        pnl_menu.add(display_choice,c);
+        c.weighty = 0.2;
+        c.gridy++;
+        pnl_menu.add(color_available_choice,c);
+        c.weighty = 0.2;
+        c.gridy++;
+        pnl_menu.add(combination_size_choice,c);
+        c.weighty = 0.2;
+        c.gridy++;
+        pnl_menu.add(nb_guess_choice,c);
+        
+        
+        
         JButton play_button = new JButton();
         play_button.setBackground(Color.LIGHT_GRAY);
-
+        
         play_button.setText("Jouer");
         play_button.addActionListener(actionEvent -> {
-            game_controller.start_game();
+            game_controller.start_game(round_choice.get_nb_round(),combination_size_choice.get_combination_size(),nb_guess_choice.get_nb_guess(),color_available_choice.get_nb_color(),display_choice.get_display_type());
         });
         play_button.setEnabled(true);
+        
+        c.insets = new Insets(10, 10, 10,10);
+        c.weighty = 0.1;
+        c.gridy ++;
         pnl_menu.add(play_button, c);
-
+        pnl_menu.setOpaque(false);
+        
         backgroundPanel.add(pnl_menu);
-
-
+        setContentPane(backgroundPanel);
+        
+        
         revalidate();
         repaint();
-
+        
     }
+    
+    
+    
     public void display_win(){
         JOptionPane.showInternalMessageDialog(null,"you won !!!");
     }
@@ -203,7 +211,7 @@ public class MainWindow extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
         
         c.fill = GridBagConstraints.BOTH;
-        
+        c.ipady = 10;
         c.weightx = 1; 
         
         c.weighty = 0.1;
@@ -246,8 +254,8 @@ public class MainWindow extends JFrame {
 
         // surtout ne regardez pas ça
         // non non je vous jure y'a rien a voir
-        setSize(499, 800);
-        setSize(500, 800);
+        setSize(551, 800);
+        setSize(550, 800);
         // on avait pas le choix pour forcer l'actualisation de la backgroundImage...
 
         repaint();
@@ -259,6 +267,7 @@ public class MainWindow extends JFrame {
         backgroundPanel.removeAll(); // pour reset le panel
         JPanel pnl_menu = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
+   
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 0.1;
@@ -273,7 +282,7 @@ public class MainWindow extends JFrame {
 
         play_button.setText("Rejouer");
         play_button.addActionListener(actionEvent -> {
-            game_controller.start_game();
+            game_controller.start_game(3,5,3,6,display_type);
         });
         play_button.setEnabled(true);
         pnl_menu.add(play_button, c);
@@ -297,19 +306,21 @@ public class MainWindow extends JFrame {
         
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
-        CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
+        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
+        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1,0));
+        CombinationPanel combination_panel = new CombinationPanel();
         for (int i = 0; i < combination_size; i++) {
             combination_panel.add(get_combination_button(combination.get_color(i)));
         }
 
         JPanel pnl_hint;
-        if(game.get_difficulty() < 2) {
-            pnl_hint = new JPanel(new GridLayout(1, game.get_combination_size())); // 1 panel de Hint par combinaison
+        if(game.get_difficulty() != DisplayType.NUMERIC) {
+            pnl_hint = new JPanel(new GridLayout(2, game.get_combination_size())); // 1 panel de Hint par combinaison
             for (int i = 0; i < game.get_combination_size(); i++) {
 
-                RoundColorButton lbl_hint = new RoundColorButton();
+                RoundColorButton lbl_hint = new RoundColorButton(new Dimension(20,20));
                 lbl_hint.setEnabled(false);
-                lbl_hint.setBackground(Color.LIGHT_GRAY);
+                lbl_hint.setBackground(Color.GRAY);
                 pnl_hint.add(lbl_hint);
             }
         }else{
@@ -326,7 +337,7 @@ public class MainWindow extends JFrame {
 
     // transforme l'élément de la combinaison en bouton
     public JButton get_combination_button(V1.Model.Color color) {
-        JButton combination_button = new RoundColorButton();
+        RoundColorButton combination_button = new RoundColorButton(new Dimension(45,45));
         combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             // set color et faut gerer si c'est la current combi
@@ -339,7 +350,7 @@ public class MainWindow extends JFrame {
 
     // transforme la couleur selectionnable en bouton
     public JButton get_color_button(V1.Model.Color color) {
-        RoundColorButton combination_button = new RoundColorButton();
+        RoundColorButton combination_button = new RoundColorButton(new Dimension(50,50));
         combination_button.setBackground(convert_color(color));
         combination_button.addActionListener(actionEvent -> {
             this.last_color = color;
@@ -375,7 +386,7 @@ public class MainWindow extends JFrame {
     private JPanel available_colors() {
         JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_availaible()+1));
         res.setBackground(Color.DARK_GRAY);
-        for (int i = 0; i < game.get_nb_color_availaible() && i < V1.Model.Color.values().length; i++) {
+        for (int i = 0; i < V1.Model.Color.values().length && i < game.get_nb_color_availaible() ; i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
         res.setOpaque(false);
@@ -421,7 +432,7 @@ public class MainWindow extends JFrame {
 
     private void set_panel_hints(JPanel panel, Hint hint) {
         // pour un affichage numerique
-        if(game.get_difficulty() == 2){
+        if(game.get_difficulty() == DisplayType.NUMERIC){
             int correct = 0;
 
             for (int i = 0; i < game.get_combination_size(); i++) {

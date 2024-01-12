@@ -33,7 +33,7 @@ public class Combination {
         this.colors[index] = color;
     }
 
-    public Hint compare_to(Combination combination, int difficulty){
+    public Hint compare_to(Combination combination, DisplayType display_type){
         Integer s = this.colors.length;
         ArrayList<Integer> index_color_not_exist = new ArrayList<Integer>();
         ArrayList<Integer> index_color_wrong_place = new ArrayList<Integer>();
@@ -47,7 +47,7 @@ public class Combination {
                 }
             }
         }
-        return new Hint(index_color_wrong_place,index_color_not_exist,s,difficulty);
+        return new Hint(index_color_wrong_place,index_color_not_exist,s,display_type);
     }   
         
     public void random(int nb_colors_availaible){

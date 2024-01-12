@@ -1,5 +1,6 @@
 package V1.View;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -59,11 +60,12 @@ public class RoundColorButton extends JButton {
     private int roundBottomLeft = 0;
     private int roundBottomRight = 0;
 
-    public RoundColorButton() {
+    public RoundColorButton(Dimension prefered_size) {
         setRoundBottomLeft(100);
         setRoundTopLeft(100);
         setRoundBottomRight(100);
         setRoundTopRight(100);
+        setPreferredSize(prefered_size);
         setBorder(null);
         setOpaque(false);
     }
@@ -86,6 +88,7 @@ public class RoundColorButton extends JButton {
         g2.fill(area);
         g2.dispose();
         super.paintComponent(grphcs);
+        setSize(getPreferredSize());
     }
 
     private Shape createRoundTopLeft() {

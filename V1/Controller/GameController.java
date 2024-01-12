@@ -19,9 +19,9 @@ public class GameController {
         window.display_menu();
     }
 
-    public void start_game(){
+    public void start_game(int nb_round,int combination_size,int nb_guess, int nb_colors_availaible, DisplayType display_type){
         window.dispose();
-        game = new Game(this,2, 2, 3, 8);
+        game = new Game(this,nb_round, combination_size, nb_guess, nb_colors_availaible,display_type );
         window = new MainWindow(game, this);
         window.display_game();
     }

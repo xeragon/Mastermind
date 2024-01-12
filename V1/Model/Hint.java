@@ -9,20 +9,20 @@ public class Hint {
     private ArrayList<Integer> index_color_wrong_place;
     private ArrayList<Integer> index_color_not_exist;
 
-    public Hint(ArrayList<Integer> index_color_wrong_place, ArrayList<Integer> index_color_not_exist, Integer size, Integer difficulty){
+    public Hint(ArrayList<Integer> index_color_wrong_place, ArrayList<Integer> index_color_not_exist, Integer size, DisplayType display_type){
         this.index_color_wrong_place = index_color_wrong_place;
         this.index_color_not_exist = index_color_not_exist;
         this.hints = new HintState[size];
         Arrays.fill(hints, 0,size,HintState.CORRECT);
         
-        switch(difficulty) {
-            case 0:
+        switch(display_type) {
+            case EASY:
                 display_easy(size);
                 return;
-            case 1:
+            case CLASSIC:
                 display_normal(size);
                 return;
-            case 2:
+            case NUMERIC:
                 display_hard(size);
                 return;
         }
