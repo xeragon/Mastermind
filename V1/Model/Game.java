@@ -15,13 +15,13 @@ public class Game {
     private int combination_size;
     private int nb_guess;
     private int nb_color_availaible;
-    private int difficulty;             // pour le choix de la difficulté des Hints : 0 facile, 1 normal, 2 difficile.
+    private DisplayType display_type;             // pour le choix de la difficulté des Hints : 0 facile, 1 normal, 2 difficile.
 
 
     private Round [] rounds; 
     private int index_current_round = 0 ;
 
-    public Game(GameController game_controller,int nb_round, int combination_size,int nb_guess,int nb_color_availaible){
+    public Game(GameController game_controller,int nb_round, int combination_size,int nb_guess,int nb_color_availaible, DisplayType display_type){
         this.game_controller = game_controller;
         this.nb_round = nb_round;
         this.combination_size = combination_size;
@@ -31,7 +31,7 @@ public class Game {
         for (int i = 0; i < nb_round; i++) {
             rounds[i] = new Round(game_controller, nb_guess, combination_size, nb_color_availaible);
         }
-        this.difficulty = 0;
+        this.display_type = display_type;
     }
 
     // public void start(){
@@ -63,7 +63,7 @@ public class Game {
     public int get_nb_round() {
         return nb_round;
     }
-    public int get_difficulty(){return difficulty;}
+    public DisplayType get_difficulty(){return display_type;}
 
     public void set_combination_size(int combination_size) {
         this.combination_size = combination_size;
@@ -77,7 +77,7 @@ public class Game {
     public void set_nb_round(int nb_round) {
         this.nb_round = nb_round;
     }
-    public void set_difficulty(int difficulty){this.difficulty = difficulty;}
+    public void set_difficulty(DisplayType display_type){this.display_type = display_type;}
 
     
     
