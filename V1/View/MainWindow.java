@@ -85,13 +85,26 @@ public class MainWindow extends JFrame {
                 if(!is_win){
                     JOptionPane.showInternalMessageDialog(null,"you are a looser !");
                 }
+                // calculé les points
+                for(int i = 0; i < game.get_combination_size(); i++){
+                    if(hint.get_hint(i) == "CORRECT"){
+                        game.add_score(4);
+                    }else if(hint.get_hint(i) == "COLOR_WRONG_PLACE"){
+                        game.add_score(1);
+                    }
+                    if(game.get_difficulty() == DisplayType.CLASSIC || game.get_difficulty() == DisplayType.NUMERIC){
+                        game.add_score(4);
+                    }
+                }
+
                 game_controller.end_round();
-                
+
             }
         } else {
             JOptionPane.showInternalMessageDialog(null,"you must set the all the colors of the combination before submiting");
         }
     }
+
     public void increment_nb_guesses_left(){
   
         JLabel l =  (JLabel) pnl_head.getComponent(1);
@@ -263,16 +276,103 @@ public class MainWindow extends JFrame {
     }
 
     public void display_stats(){
-        System.out.println("display stats");
+        backgroundPanel.removeAll(); // pour reset le panel
+
+        BackgroundPanel background = new BackgroundPanel();
+
+        JPanel pnl_menu = new JPanel(new GridBagLayout());
+        JPanel pnl_score = new JPanel(new FlowLayout());
+        background.add(pnl_menu,BorderLayout.CENTER);
+
+
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+
+        c.weightx = 1;
+
+
+        c.gridy = 0;
+
+
+
+        c.gridx = 0;
+
+        c.insets = new Insets(50, 10, 0,10);
+        c.weighty = 0.1;
+        JPanel title = new JPanel();
+        title.setOpaque(false);
+        JLabel label = new JLabel("Mastermind");
+        label.setFont(new Font("Serif", Font.BOLD, 64));
+        title.add(label);
+        pnl_menu.add(title,c);
+        c.insets = new Insets(20, 10, 0,10);
+
+        c.weightx = 1;
+        c.weighty = 0.2;
+        c.gridy++;
+        JLabel lbl_score = new JLabel("Score final : " + game.get_score());
+        lbl_score.setFont(new Font("Serif", Font.BOLD, 42));
+        pnl_score.add(lbl_score);
+        pnl_score.setOpaque(false);
+        pnl_menu.add(pnl_score,c);
+        c.weighty = 0.2;
+        c.gridy++;
+        //replay
+        JButton play_button = new JButton();
+        play_button.setBackground(Color.LIGHT_GRAY);
+
+        play_button.setText("Rejouer");
+        play_button.setFont(new Font("Serif", Font.BOLD, 42));
+        play_button.addActionListener(actionEvent -> {
+            game_controller.start_game(game.get_nb_round(), game.get_combination_size(), game.get_nb_guess(), game.get_nb_color_availaible(), game.get_difficulty());
+        });
+        play_button.setEnabled(true);
+
+        c.insets = new Insets(10, 10, 10,10);
+        c.weighty = 0.1;
+        c.gridy ++;
+        pnl_menu.add(play_button, c);
+
+        c.weighty = 0.2;
+        c.gridy++;
+        //menu :
+        JButton menu_button = new JButton();
+        menu_button.setBackground(Color.LIGHT_GRAY);
+
+        menu_button.setText("Menu");
+        menu_button.setFont(new Font("Serif", Font.BOLD, 42));
+        menu_button.addActionListener(actionEvent -> {
+            game_controller.show_menu();
+        });
+        menu_button.setEnabled(true);
+
+        c.insets = new Insets(10, 10, 10,10);
+        c.weighty = 0.1;
+        c.gridy ++;
+        pnl_menu.add(menu_button,c);
+        pnl_menu.setOpaque(false);
+
+        backgroundPanel.add(pnl_menu);
+        setContentPane(backgroundPanel);
+
+        revalidate();
+        repaint();
+
+        /*System.out.println("display stats");
         backgroundPanel.removeAll(); // pour reset le panel
         JPanel pnl_menu = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-   
+
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 0.1;
 
         // afficher le resumé
+        c.gridx = 0;
+        c.gridy = 0;
+        JLabel final_score = new JLabel("Score final : " + game.get_score());
+        pnl_menu.add(final_score, c);
 
         // boutons
         c.gridx = 0;
@@ -300,7 +400,7 @@ public class MainWindow extends JFrame {
 
         backgroundPanel.add(pnl_menu);
         revalidate();
-        repaint();
+        repaint();*/
     }
         
         
@@ -326,7 +426,7 @@ public class MainWindow extends JFrame {
         }else{
             pnl_hint = new JPanel(new GridLayout(2, 1)); // 1 panel de Hint par combinaison
             pnl_hint.add(new JLabel("Correct : "));
-            pnl_hint.add(new JLabel("faux : "));
+            pnl_hint.add(new JLabel("Mauvais endroit : "));
         }
         pnl_hint.setOpaque(false);
         combination_panel.add(pnl_hint);
@@ -434,19 +534,19 @@ public class MainWindow extends JFrame {
         // pour un affichage numerique
         if(game.get_difficulty() == DisplayType.NUMERIC){
             int correct = 0;
+            int wrong = 0;
 
             for (int i = 0; i < game.get_combination_size(); i++) {
                 if(hint.get_hint(i) == "CORRECT")
                     correct ++;
-                else
-                    break;
+                else if(hint.get_hint(i) == "COLOR_WRONG_PLACE")
+                    wrong ++ ;
             }
-            int wrong = game.get_combination_size() - correct;
             Component[] components = panel.getComponents();
             JLabel nb_correct = (JLabel)components[0];
             JLabel nb_wrong = (JLabel)components[1];
             nb_correct.setText("Correct : " + correct);
-            nb_wrong.setText("Faux : " + wrong);
+            nb_wrong.setText("Mauvais endroit  : " + wrong);
 
         }else {
             Component[] components = panel.getComponents();

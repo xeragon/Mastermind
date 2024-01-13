@@ -20,9 +20,15 @@ public class PanelRoundChoice extends JPanel{
     }
 
     public int get_nb_round(){
-        return Integer.parseInt(text.getText());
-    }
+        int r;
+        try {
+            r = Integer.parseInt(text.getText());
 
+        } catch (Exception e) {
+            r = 3;
+        }
+        return r;
+    }
 }
 
 
