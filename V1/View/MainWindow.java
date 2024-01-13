@@ -479,6 +479,10 @@ public class MainWindow extends JFrame {
                 return Color.MAGENTA; // y'a pas purple :(
             case PINK:
                 return Color.PINK;
+            case CYAN:
+                return Color.CYAN;
+            case ORANGE:
+                return Color.ORANGE;
         }
         return null;
     }
@@ -522,6 +526,10 @@ public class MainWindow extends JFrame {
             return V1.Model.Color.PURPLE;
         } else if (color == Color.PINK) {
             return V1.Model.Color.PINK;
+        }else if (color == Color.CYAN){
+            return V1.Model.Color.CYAN;
+        }else if (color == Color.ORANGE){
+            return V1.Model.Color.ORANGE;
         }
 
         else {
