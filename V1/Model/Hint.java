@@ -19,11 +19,8 @@ public class Hint {
             case EASY:
                 display_easy(size);
                 return;
-            case CLASSIC:
+            case CLASSIC, NUMERIC:
                 display_normal(size);
-                return;
-            case NUMERIC:
-                display_hard(size);
                 return;
         }
         return;
@@ -42,17 +39,6 @@ public class Hint {
         int i = size - (index_color_not_exist.size() + index_color_wrong_place.size());
         for(int k = 0; k < index_color_wrong_place.size(); k++){
             hints[i + k] = HintState.COLOR_WRONG_PLACE;
-        }
-        i += index_color_wrong_place.size();
-        for(int k = 0; k < index_color_not_exist.size(); k++){
-            hints[i + k] = HintState.COLOR_NOT_EXIST;
-        }
-    }
-
-    private void display_hard(int size){
-        int i = size - (index_color_not_exist.size() + index_color_wrong_place.size());
-        for(int k = 0; k < index_color_wrong_place.size(); k++){
-            hints[i + k] = HintState.COLOR_NOT_EXIST;
         }
         i += index_color_wrong_place.size();
         for(int k = 0; k < index_color_not_exist.size(); k++){

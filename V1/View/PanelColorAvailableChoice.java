@@ -52,12 +52,30 @@ public class PanelColorAvailableChoice extends JPanel {
         six.addActionListener(e -> {
             this.nb_color_availaible = 6;
         });
+
+        JRadioButton seven = new JRadioButton("7");
+        seven.setOpaque(false);
+        seven.setMnemonic(KeyEvent.VK_B);
+        seven.setActionCommand("7");
+        seven.addActionListener(e -> {
+            this.nb_color_availaible = 7;
+        });
+
+        JRadioButton eight = new JRadioButton("8");
+        eight.setOpaque(false);
+        eight.setMnemonic(KeyEvent.VK_B);
+        eight.setActionCommand("8");
+        eight.addActionListener(e -> {
+            this.nb_color_availaible = 8;
+        });
         
         //Group the radio buttons.
         ButtonGroup group = new ButtonGroup();
         group.add(four);
         group.add(five);
         group.add(six);
+        group.add(seven);
+        group.add(eight);
 
         c.gridx = 1;
         add(four, c);
@@ -65,6 +83,10 @@ public class PanelColorAvailableChoice extends JPanel {
         add(five, c);
         c.gridx ++;
         add(six, c);
+        c.gridx ++;
+        add(seven, c);
+        c.gridx ++;
+        add(eight, c);
         setOpaque(false);
     }
 
