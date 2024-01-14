@@ -83,11 +83,21 @@ package View {
 
 
 package Controller{
-    class GameController {
-        - rounds : Round[*]
-        - current_game_mode : GameMode
-        + selected_color : Color
+    class Main {
+      + main(args: String[]): void
     }
+    Main --> GameController : gc
+
+    class GameController {
+        - window: MainWindow
+        - game: Game
+        + GameController()
+        + show_menu(): void
+        + start_game(nb_round: int, combination_size: int, nb_guess: int, nb_colors_availaible: int, display_type: DisplayType): void
+        + submit_guess(combination: Combination, hint: Hint): boolean
+        + end_round(): void
+        + display_round(): void
+      }
 }
 MainWindow *-> "1 \n displayMode" DisplayMode
 Round *--> " 1 \n - sercretCombi" Combinaison
