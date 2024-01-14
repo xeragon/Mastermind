@@ -5,25 +5,89 @@ skinparam classFontStyle Bold
 skinparam style strictuml
 hide empty members
 
+class Controller.GameController
+
 package Model{
 
-
-    class Combinaison {
-        + Combinaison(combinaison_size : Integer, colors: Color[*])
-        + Combinaison(combinaison_size : Integer)
-        + switchColor(index : Integer, color : Color)
-        + compareTo(a: Combinaison) : Hint
-    }
-
-
-    enum Color {
+    enum Color{
         RED
         BLUE
-        YELLOW
         GREEN
+        YELLOW
         PURPLE
         PINK
+        CYAN
+        ORANGE
     }
+
+    class Combination {
+        + Combination(combination_size : Integer)
+        + Combination(init_colors: Color[*])
+        + get_color(index: Integer) : Color
+        + get_colors() : Color[*]
+        + set_color(index : Integer, color : Color)
+        + compare_to(combination : Combination, display_type : DisplayType) : Hint
+        + random(nb_colors_availaible : Integer)
+        + get_content() : String
+    }
+
+    Combination --> "- colors\n1..*" Color
+    Combination --> "- used_colors\n1..*" Color
+    Combination ..> DisplayType: <<use>>
+    Combination ..> Hint: <<use>>
+
+
+    enum DisplayType{
+        EASY
+        CLASSIC
+        NUMERIC
+    }
+
+
+    class Game {
+        - nb_round : Integer
+        - combination_size : Integer
+        - nb_guess : Integer
+        - nb_color_available : Integer
+        - display_type : DisplayType
+        - score : Integer
+        - index_current_round : Integer
+        + Game(game_controller : GameController, nb_round : Integer, combination_size : Integer, nb_guess : Integer, nb_color_available : Integer, display_type : DisplayType)
+        + get_current_color() : Color
+        + get_current_round() : Round
+        + get_current_round_index() : Integer
+        + increment_index_current_round()
+        + get_combination_size() : Integer
+        + get_nb_color_availaible() : Integer
+        + get_nb_guess() : Integer
+        + get_nb_round() : Integer
+        + get_difficulty() : DisplayType
+        + get_score() : Integer
+        + set_combination_size(combination_size : Integer)
+        + set_nb_color_availaible(nb_color_availaible : Integer)
+        + set_nb_guess(nb_guess : Integer)
+        + set_nb_round(nb_round : Integer)
+        + set_difficulty(display_type : DisplayType)
+        + set_score(score : Integer)
+        + add_score(value : Integer)
+    }
+
+    Game --> "-selected_color\n1" Color
+    Game --> "game_controller\n1" GameController
+    Game --> "display_type\n1" DisplayType
+    Game --> "-rounds\n1..*" Round
+
+    class Hint {
+        - index_color_wrong_place : ArrayList<Integer>
+        - index_color_not_exist : ArrayList<Integer>
+        + Hint(index_color_wrong_place : ArrayList<Integer>, index_color_not_exist : ArrayList<Integer>, size : Integer, display_type : DisplayType)
+        - display_easy(size : Integer)
+        - display_normal(size : Integer)
+        + get_hint(index : Integer) : String
+    }
+
+    Hint --> "-hints\n1..*" HintState
+    Hint ..> DisplayType : <<use>>
 
     enum HintState{
         CORRECT,
@@ -31,60 +95,34 @@ package Model{
         COLOR_WRONG_PLACE
     }
 
-    class Hint {
-        + Hint(index_color_wrong_place : int[*], index_color_not_exist : int[*],size : int)
-    }
-
-    class Game {
-        - nb_round : Integer
-        - combinaison_size : Integer
-        - nb_guess : Integer
-        - nb_available_color : Integer
-        + set_combinaison_size(nb : Integer)
-        + addGuess()
-        + set_nb_available_color(nb : Integer)
-        + getGuess():Integer
-    }
 
     class Round {
-        + Round(combinaison_size : Integer)
-        + getCombinaison() : Combinaison
-    }
-    Game *--> Round : "1.*\n- rounds"
-    Combinaison *-> Color : "1.*\n- colors"
-}
-
-package View {
-    enum Display{
-        MENU
-        GAME
-        END
-    }
-    class MainWindow {
-        + MainWindow()
-        + SwitchDisplay(display : Display)
-
+        - nb_guess : Integer
+        - combination_size : Integer
+        - nb_guess : Integer
+        - combination_size : Integer
+        - nb_guess_taken : Integer
+        + Round(game_controller : GameController, nb_guess : Integer, combination_size : Integer, nb_colors_availaible : Integer)
+        + get_display_secret_combi() : String
+        + can_continue_guess : boolean
+        + get_nb_guess_taken() : Integer
+        + increment_nb_guess_taken()
+        + get_secret_combination() : Combination
+        + get_combinations() : Combination[*]
+        + set_combination(combination : Combination, index : Integer)
+        + set_hints(hint : Hint, index : Integer)
     }
 
-    class DisplayMode {
-        + displayHint()
-    }
-
-    class ModeEasy extends DisplayMode {
-      + displayHint()
-    }
-    class ModeClassic extends DisplayMode {
-      + displayHint()
-    }
-    class ModeNumeric extends DisplayMode {
-      + displayHint()
-    }
+    Round --> "-game_controller\n1" GameController
+    Round --> "-combinations\n1..*" Combination
+    Round --> "-hints\n1..*" Hint
+    Round --> "-secret_combination\n1" Combination
 }
 
 
 package Controller{
     class Main {
-      + main(args: String[]): void
+      + {static} main(args: String[])
     }
     Main --> GameController : gc
 
@@ -92,21 +130,152 @@ package Controller{
         - window: MainWindow
         - game: Game
         + GameController()
-        + show_menu(): void
-        + start_game(nb_round: int, combination_size: int, nb_guess: int, nb_colors_availaible: int, display_type: DisplayType): void
+        + show_menu()
+        + start_game(nb_round: Integer, combination_size: Integer, nb_guess: Integer, nb_colors_availaible: Integer, display_type: DisplayType)
         + submit_guess(combination: Combination, hint: Hint): boolean
-        + end_round(): void
-        + display_round(): void
-      }
-}
-MainWindow *-> "1 \n displayMode" DisplayMode
-Round *--> " 1 \n - sercretCombi" Combinaison
-Round *--> " 1..* \n - combiArray" Combinaison
-Round *-> " 1..* \n - hints" Hint
-Hint *--> " 1..* \n - hints" HintState
+        + end_round()
+        + display_round()
+    }
 
-MainWindow ..> GameController: <<use>>
-MainWindow ..> Display: <<use>>
+    GameController ..> DisplayType : <<use>>
+    GameController ..> Combination : <<uses>>
+    GameController ..> Hint : <<uses>>
+}
+
+
+package View {
+    class BackgroundPanel{
+        - background : Image
+        + BackgroundPanel()
+        # paintComponent(g : Graphics)
+        + getPreferredSize() : Dimension
+    }
+
+
+    class CombinationPanel{
+        + <<Create>>CombinationPanel()
+        + <<Create>>CombinationPanel(gridLayout: GridLayout)
+    }
+
+    class CombinationSizeChoice{
+        - combination_size : Integer
+        + <<Create>>CombinationSizeChoice()
+        + get_combination_size() : Integer
+    }
+
+    class HintPawn{
+        + <<Create>>HintPawn()
+        + change_color(color : Color)
+    }
+
+
+    class MainWindow{
+        - hint_display_mode : HintDisplayMode
+        - BackgroundPanel : BackgroundPanel
+        - pnlPrincipal : JPanel
+        - pnlSecret : JPanel
+        - pnlTries : JPanel
+        - pnl_head : JPanel
+        - EMPTY_COLOR : Color
+        + MainWindow(game : Game, game_controller GameController)
+        - is_combinaison_panel_set(combinaison_panel : JPanel) : boolean
+        - submit_guess()
+        + increment_nb_guesses_left()
+        + display_menu()
+        + display_win()
+        + display_game()
+        + display_stats()
+        + get_combination_panel(combination : Combination, combination_size : Integer) : JPanel
+        + get_combination_button(color Color) : JButton
+        + get_color_button(color Color) : JButton
+        + convert_color(color Color) : Color
+        - available_colors() : JPanel
+        - convert_to_combination(combination_panel JPanel) : Combination
+        - convert_to_color(color Color) : Color
+        - set_panel_hints(panel : JPanel, hint : Hint)
+    }
+
+    MainWindow o--> "- last_color\n1" Color
+    MainWindow o--> "- game\n1" Game
+    MainWindow o--> "- game_controller\n1" GameController
+    MainWindow o--> "- display_type\n1" DisplayType
+    MainWindow ..> Combination : <<use>>
+    MainWindow ..> Color : <<use>>
+
+
+    class NbGuessChoice{
+
+        + get_nb_guess() : Integer
+        + NbGuessChoice()
+    }
+    NbGuessChoice o--> "- ncbo\n1" NumberComboBox
+
+    class NumberComboBox{
+        - numberComboBox : JComboBox[]
+        - n : Integer
+        + <<Create>>NumberComboBox()
+        + initializeUI()
+        + get_n() : Integer
+    }
+
+    class PanelColorAvailableChoice{
+        + PanelColorAvailableChoice()
+        + get_nb_color() : Integer
+    }
+
+    class PanelDisplayChoice{
+        + <<Create>>PanelDisplayChoice()
+        + get_display_type()
+    }
+    PanelDisplayChoice o--> "- display_type\n1" DisplayType
+
+    class PanelHead{
+        + <<Create>>PanelHead(round : Integer, guess : Integer)
+    }
+
+    class PanelRound{
+        + getRoundTopLeft() : Integer
+        + setRoundTopLeft(roundTopLeft : Integer)
+        + getRoundTopRight(roundTopRight : Integer)
+        + getRoundBottomLeft() : Integer
+        + setRoundBottomRight(roundBottomRight : Integer)
+        - roundTopLeft : Integer
+        # roundTopRight : Integer
+        # roundBottomLeft : Integer
+        # roundBottomRight : Integer
+        + <<Create>>PanelRound()
+        + <<Create>>PanelRound(gridLayout : GridLayout)
+        # @override paintComponent(grphcs : Graphics)
+        # createRoundTopLeft() : Shape
+        # createRoundTopRight() : Shape
+        # createRoundBottomLeft() : Shape
+        # createRoundBottomRight() : Shape
+    }
+
+    class PanelRoundChoice {
+        - text : JTextField
+        + <<Create>>PanelRoundChoice()
+        + get_nb_round() : Integer
+    }
+
+    class RoundColorButton {
+        + getRoundTopLeft() : Integer
+        + setRoundTopLeft(roundTopLeft : Integer)
+        + getRoundTopRight(roundTopRight : Integer)
+        + getRoundBottomLeft() : Integer
+        + setRoundBottomRight(roundBottomRight : Integer)
+        - roundTopLeft : Integer
+        # roundTopRight : Integer
+        # roundBottomLeft : Integer
+        # roundBottomRight : Integer
+        + <<Create>>RoundColorButton(prefered_size : Dimension)
+        # @override paintComponent(grphcs : Graphics)
+        # createRoundTopLeft() : Shape
+        # createRoundTopRight() : Shape
+        # createRoundBottomLeft() : Shape
+        # createRoundBottomRight() : Shape
+    }
+}
 
 
 @enduml
