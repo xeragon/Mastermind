@@ -21,8 +21,8 @@ package Model{
     }
 
     class Combination {
-        + Combination(combination_size : Integer)
-        + Combination(init_colors: Color[*])
+        + <<Create>>Combination(combination_size : Integer)
+        + <<Create>>Combination(init_colors: Color[*])
         + get_color(index: Integer) : Color
         + get_colors() : Color[*]
         + set_color(index : Integer, color : Color)
@@ -31,8 +31,8 @@ package Model{
         + get_content() : String
     }
 
-    Combination --> "- colors\n1..*" Color
-    Combination --> "- used_colors\n1..*" Color
+    Combination o--> "- colors\n1..*" Color
+    Combination o--> "- used_colors\n1..*" Color
     Combination ..> DisplayType: <<use>>
     Combination ..> Hint: <<use>>
 
@@ -52,7 +52,7 @@ package Model{
         - display_type : DisplayType
         - score : Integer
         - index_current_round : Integer
-        + Game(game_controller : GameController, nb_round : Integer, combination_size : Integer, nb_guess : Integer, nb_color_available : Integer, display_type : DisplayType)
+        + <<Create>>Game(game_controller : GameController, nb_round : Integer, combination_size : Integer, nb_guess : Integer, nb_color_available : Integer, display_type : DisplayType)
         + get_current_color() : Color
         + get_current_round() : Round
         + get_current_round_index() : Integer
@@ -72,21 +72,21 @@ package Model{
         + add_score(value : Integer)
     }
 
-    Game --> "-selected_color\n1" Color
-    Game --> "game_controller\n1" GameController
-    Game --> "display_type\n1" DisplayType
-    Game --> "-rounds\n1..*" Round
+    Game o--> "-selected_color\n1" Color
+    Game o--> "game_controller\n1" GameController
+    Game o--> "display_type\n1" DisplayType
+    Game o--> "-rounds\n1..*" Round
 
     class Hint {
         - index_color_wrong_place : ArrayList<Integer>
         - index_color_not_exist : ArrayList<Integer>
-        + Hint(index_color_wrong_place : ArrayList<Integer>, index_color_not_exist : ArrayList<Integer>, size : Integer, display_type : DisplayType)
+        + <<Create>>Hint(index_color_wrong_place : ArrayList<Integer>, index_color_not_exist : ArrayList<Integer>, size : Integer, display_type : DisplayType)
         - display_easy(size : Integer)
         - display_normal(size : Integer)
         + get_hint(index : Integer) : String
     }
 
-    Hint --> "-hints\n1..*" HintState
+    Hint o--> "-hints\n1..*" HintState
     Hint ..> DisplayType : <<use>>
 
     enum HintState{
@@ -102,7 +102,7 @@ package Model{
         - nb_guess : Integer
         - combination_size : Integer
         - nb_guess_taken : Integer
-        + Round(game_controller : GameController, nb_guess : Integer, combination_size : Integer, nb_colors_availaible : Integer)
+        + <<Create>>Round(game_controller : GameController, nb_guess : Integer, combination_size : Integer, nb_colors_availaible : Integer)
         + get_display_secret_combi() : String
         + can_continue_guess : boolean
         + get_nb_guess_taken() : Integer
@@ -113,10 +113,10 @@ package Model{
         + set_hints(hint : Hint, index : Integer)
     }
 
-    Round --> "-game_controller\n1" GameController
-    Round --> "-combinations\n1..*" Combination
-    Round --> "-hints\n1..*" Hint
-    Round --> "-secret_combination\n1" Combination
+    Round o--> "-game_controller\n1" GameController
+    Round o--> "-combinations\n1..*" Combination
+    Round o--> "-hints\n1..*" Hint
+    Round o--> "-secret_combination\n1" Combination
 }
 
 
@@ -129,7 +129,7 @@ package Controller{
     class GameController {
         - window: MainWindow
         - game: Game
-        + GameController()
+        + <<Create>>GameController()
         + show_menu()
         + start_game(nb_round: Integer, combination_size: Integer, nb_guess: Integer, nb_colors_availaible: Integer, display_type: DisplayType)
         + submit_guess(combination: Combination, hint: Hint): boolean
@@ -146,7 +146,7 @@ package Controller{
 package View {
     class BackgroundPanel{
         - background : Image
-        + BackgroundPanel()
+        + <<Create>>BackgroundPanel()
         # paintComponent(g : Graphics)
         + getPreferredSize() : Dimension
     }
