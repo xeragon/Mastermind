@@ -10,7 +10,6 @@ import V1.Model.*;
 
 
 public class MainWindow extends JFrame {
-    private HintDisplayMode hint_display_mode;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlPrincipal;
     private JPanel pnlSecret; // combinaison secrete
@@ -251,13 +250,7 @@ public class MainWindow extends JFrame {
         submit_button.setEnabled(true);
         pnl_available_colors.add(submit_button);
         
-        // afficher combi secrete :
-        
-        // Component[] components = get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()).getComponents();
-        // for (Component component : components) {
-            //     pnlSecret.add(component);
-            // }
-            
+
         pnlTries.add(get_combination_panel(current_round.get_combinations()[0], game.get_combination_size()));
 
         // surtout ne regardez pas ça
@@ -354,55 +347,12 @@ public class MainWindow extends JFrame {
         revalidate();
         repaint();
 
-        /*System.out.println("display stats");
-        backgroundPanel.removeAll(); // pour reset le panel
-        JPanel pnl_menu = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
 
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 0.1;
-
-        // afficher le resumé
-        c.gridx = 0;
-        c.gridy = 0;
-        JLabel final_score = new JLabel("Score final : " + game.get_score());
-        pnl_menu.add(final_score, c);
-
-        // boutons
-        c.gridx = 0;
-        c.gridy ++;
-        JButton play_button = new JButton();
-        play_button.setBackground(Color.LIGHT_GRAY);
-
-        play_button.setText("Rejouer");
-        play_button.addActionListener(actionEvent -> {
-            game_controller.start_game(3,5,3,6,display_type);
-        });
-        play_button.setEnabled(true);
-        pnl_menu.add(play_button, c);
-
-        c.gridx ++;
-        JButton menu_button = new JButton();
-        menu_button.setBackground(Color.LIGHT_GRAY);
-
-        menu_button.setText("Menu");
-        menu_button.addActionListener(actionEvent -> {
-            game_controller.show_menu();
-        });
-        menu_button.setEnabled(true);
-        pnl_menu.add(menu_button, c);
-
-        backgroundPanel.add(pnl_menu);
-        revalidate();
-        repaint();*/
     }
         
         
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
-        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
-        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1,0));
         CombinationPanel combination_panel = new CombinationPanel();
         for (int i = 0; i < combination_size; i++) {
             combination_panel.add(get_combination_button(combination.get_color(i)));

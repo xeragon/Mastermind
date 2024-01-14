@@ -32,10 +32,7 @@ public class Game {
         this.score = 0;
     }
 
-    // public void start(){
-    //     this.rounds[this.index_current_round].display_game();
-    //     this.rounds[this.index_current_round].listen_for_combi();
-    // }
+
     public Color get_current_color(){
         return selected_color;
     }
