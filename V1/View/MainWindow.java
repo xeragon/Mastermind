@@ -35,6 +35,7 @@ public class MainWindow extends JFrame {
         this.game = game;
         this.game_controller = game_controller;
         setSize(500, 850);
+        setResizable(false);
         setMinimumSize(new Dimension(500,850));
         setMaximumSize(new Dimension(500,850));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -282,7 +283,7 @@ public class MainWindow extends JFrame {
 
         play_button.setText("Rejouer");
         play_button.addActionListener(actionEvent -> {
-            game_controller.start_game(3,5,3,6,display_type);
+            game_controller.start_game(game.get_nb_round(),game.get_combination_size(),game.get_nb_guess(),game.get_nb_color_availaible(),display_type);
         });
         play_button.setEnabled(true);
         pnl_menu.add(play_button, c);
