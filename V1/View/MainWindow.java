@@ -1,21 +1,15 @@
 package V1.View;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import V1.Controller.GameController;
 import V1.Model.*;
 
 
 public class MainWindow extends JFrame {
-    private HintDisplayMode hint_display_mode;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlPrincipal;
     private JPanel pnlSecret; // combinaison secrete
@@ -257,13 +251,7 @@ public class MainWindow extends JFrame {
         submit_button.setEnabled(true);
         pnl_available_colors.add(submit_button);
         
-        // afficher combi secrete :
-        
-        // Component[] components = get_combination_panel(current_round.get_secret_combination(), game.get_combination_size()).getComponents();
-        // for (Component component : components) {
-            //     pnlSecret.add(component);
-            // }
-            
+
         pnlTries.add(get_combination_panel(current_round.get_combinations()[0], game.get_combination_size()));
 
         // surtout ne regardez pas ça
@@ -326,7 +314,7 @@ public class MainWindow extends JFrame {
         play_button.setText("Rejouer");
         play_button.setFont(new Font("Serif", Font.BOLD, 42));
         play_button.addActionListener(actionEvent -> {
-            game_controller.start_game(game.get_nb_round(), game.get_combination_size(), game.get_nb_guess(), game.get_nb_color_availaible(), game.get_difficulty());
+            game_controller.start_game(game.get_nb_round(), game.get_combination_size(), game.get_nb_guess(), game.get_nb_color_available(), game.get_difficulty());
         });
         play_button.setEnabled(true);
 
@@ -360,10 +348,6 @@ public class MainWindow extends JFrame {
         revalidate();
         repaint();
 
-        /*System.out.println("display stats");
-        backgroundPanel.removeAll(); // pour reset le panel
-        JPanel pnl_menu = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -407,8 +391,6 @@ public class MainWindow extends JFrame {
         
     // Transforme une combination en JPanel
     public JPanel get_combination_panel(Combination combination, int combination_size) {
-        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1, game.get_combination_size() + 1));
-        // CombinationPanel combination_panel = new CombinationPanel(new GridLayout(1,0));
         CombinationPanel combination_panel = new CombinationPanel();
         for (int i = 0; i < combination_size; i++) {
             combination_panel.add(get_combination_button(combination.get_color(i)));
@@ -489,9 +471,9 @@ public class MainWindow extends JFrame {
     }
 
     private JPanel available_colors() {
-        JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_availaible()+1));
+        JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_available()+1));
         res.setBackground(Color.DARK_GRAY);
-        for (int i = 0; i < V1.Model.Color.values().length && i < game.get_nb_color_availaible() ; i++) {
+        for (int i = 0; i < V1.Model.Color.values().length && i < game.get_nb_color_available() ; i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
         res.setOpaque(false);
