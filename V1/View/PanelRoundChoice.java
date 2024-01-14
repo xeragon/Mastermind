@@ -23,12 +23,13 @@ public class PanelRoundChoice extends JPanel{
         int r;
         try {
             r = Integer.parseInt(text.getText());
-
+            
         } catch (Exception e) {
             r = 3;
         }
         return r;
     }
+
 }
 
 

@@ -29,6 +29,7 @@ public class MainWindow extends JFrame {
         this.game = game;
         this.game_controller = game_controller;
         setSize(500, 850);
+        setResizable(false);
         setMinimumSize(new Dimension(500,850));
         setMaximumSize(new Dimension(500,850));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -348,6 +349,43 @@ public class MainWindow extends JFrame {
         repaint();
 
 
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 0.1;
+
+        // afficher le resumé
+        c.gridx = 0;
+        c.gridy = 0;
+        JLabel final_score = new JLabel("Score final : " + game.get_score());
+        pnl_menu.add(final_score, c);
+
+        // boutons
+        c.gridx = 0;
+        c.gridy ++;
+        JButton play_button = new JButton();
+        play_button.setBackground(Color.LIGHT_GRAY);
+
+        play_button.setText("Rejouer");
+        play_button.addActionListener(actionEvent -> {
+            game_controller.start_game(game.get_nb_round(),game.get_combination_size(),game.get_nb_guess(),game.get_nb_color_availaible(),display_type);
+        });
+        play_button.setEnabled(true);
+        pnl_menu.add(play_button, c);
+
+        c.gridx ++;
+        JButton menu_button = new JButton();
+        menu_button.setBackground(Color.LIGHT_GRAY);
+
+        menu_button.setText("Menu");
+        menu_button.addActionListener(actionEvent -> {
+            game_controller.show_menu();
+        });
+        menu_button.setEnabled(true);
+        pnl_menu.add(menu_button, c);
+
+        backgroundPanel.add(pnl_menu);
+        revalidate();
+        repaint();*/
     }
         
         
