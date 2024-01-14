@@ -1,14 +1,9 @@
 package V1.View;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import V1.Controller.GameController;
 import V1.Model.*;
@@ -325,7 +320,7 @@ public class MainWindow extends JFrame {
         play_button.setText("Rejouer");
         play_button.setFont(new Font("Serif", Font.BOLD, 42));
         play_button.addActionListener(actionEvent -> {
-            game_controller.start_game(game.get_nb_round(), game.get_combination_size(), game.get_nb_guess(), game.get_nb_color_availaible(), game.get_difficulty());
+            game_controller.start_game(game.get_nb_round(), game.get_combination_size(), game.get_nb_guess(), game.get_nb_color_available(), game.get_difficulty());
         });
         play_button.setEnabled(true);
 
@@ -488,9 +483,9 @@ public class MainWindow extends JFrame {
     }
 
     private JPanel available_colors() {
-        JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_availaible()+1));
+        JPanel res = new JPanel(new GridLayout(1,game.get_nb_color_available()+1));
         res.setBackground(Color.DARK_GRAY);
-        for (int i = 0; i < V1.Model.Color.values().length && i < game.get_nb_color_availaible() ; i++) {
+        for (int i = 0; i < V1.Model.Color.values().length && i < game.get_nb_color_available() ; i++) {
             res.add(get_color_button(V1.Model.Color.values()[i]));
         }
         res.setOpaque(false);

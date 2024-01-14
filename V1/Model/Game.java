@@ -1,9 +1,5 @@
 package V1.Model;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import V1.Controller.GameController;
 
 public class Game {
@@ -55,7 +51,7 @@ public class Game {
     public int get_combination_size() {
         return combination_size;
     }
-    public int get_nb_color_availaible() {
+    public int get_nb_color_available() {
         return nb_color_availaible;
     }
     public int get_nb_guess() {
