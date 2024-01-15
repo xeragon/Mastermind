@@ -1,21 +1,21 @@
 package V1.View;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class BackgroundPanel extends JPanel
 {
     private Image background;
     public BackgroundPanel()
     {
-        Image background = Toolkit.getDefaultToolkit().createImage("V1/Ressource/scroll.jpg");
-        this.background = background;
+        //Image background = Toolkit.getDefaultToolkit().createImage("V1/View/scroll.jpg");
+
+        ImageIcon background = new ImageIcon(getClass().getClassLoader().getResource("scroll.jpg"));
+        this.background = background.getImage();
         setLayout( new BorderLayout() );
         setOpaque(true);
         revalidate();
