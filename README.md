@@ -10,7 +10,8 @@ windows : double click sur Mastermind.jar
 
 Jouer au jeu
 -------------------
-Menu de selection des paramètres 
+Menu de selection des paramètres
+ 
 <img src="img/menu.png" alt="drawing" width="50%"/>
 
 déroulement d'une partie
